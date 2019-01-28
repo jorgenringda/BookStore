@@ -61,7 +61,6 @@ public class Kiosk {
             System.out.println(publication);
             index++;
 
-            System.out.println("er du med git")
         }
     }
 }
