@@ -2,11 +2,11 @@
  * represent periodical publication
  * represented by title, publisher, release per year, type and genre / field
  */
-package kiosk;
+package NewspaperStore;
 
 /**
  *
- * @author Ishmael
+ * @author Ultrareidar
  */
 public class PeriodicalPublication {
 

@@ -4,11 +4,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kiosk;
+package NewspaperStore;
 
 /**
  *
- * @author Ishmael
+ * @author Ultrareidar
  */
 public class Newspaper {
 
@@ -25,7 +25,7 @@ public class Newspaper {
     }
 
     public String getDetails() {
-        return "title: " + title + "    publisher: " + publisher + "  field: " + field + "    release per year: " + releasePerYear;
+        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + field + "\nRelease Per Year: " + releasePerYear;
     }
 
     public String getTitle() {
