@@ -2,7 +2,7 @@
  * represent periodical publication
  * represented by title, publisher, release per year, type and genre / field
  */
-package NewspaperStore;
+package BookStore;
 
 /**
  *
