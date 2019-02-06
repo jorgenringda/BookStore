@@ -19,24 +19,28 @@ public class Main {
     public static void main(String[] args) {
 
         Database test = new Database();
-        for (int i = 0; i < 20; i++) {
+        /**
+         * add 12 magazines
+         */
+        for (int i = 1; i < 13; i++) {
             test.addMagazine("kristofer hattemaker " + i, "hampus e rar " + i, "dyreliv", 12);
         }
-        //  for (Magazine tiss : test) {
-        //     Magazine tiss = test.getMagazineByPublisher("hampus e rar");
-        //      System.out.println(tiss.getDetails());
-        //     }
-        test.addMagazine("bæsj på tissen", "tiss i rompa", "hverdagshelter", 0);
-        //Magazine tets = test.getMagazineByTitle("bæsj på tissen");
-        // System.out.println(tets.getDetails());
-        test.sellMagazineByIndex(0);
-        // test.deleteMagazineByTitle("bæsj på tissen");
-        //test.deleteMagazineByPublisher("hampus e rar");
+        /**
+         * sells magazine by title
+         */
+        test.sellMagazineByTitle("kristofer hattemaker 2");
 
-        ArrayList<Magazine> test66 = test.getMagazineByTitle("kristofer ha");
-        for (Magazine test88 : test66) {
-            System.out.println(test88.getDetails());
-        }
+        /**
+         * print out alla magazine with the title contains "kristofer ha"
+         */
+        ArrayList<Magazine> magazineByTitle = test.getMagazineByTitle("kristofer ha");
+        magazineByTitle.forEach((magazine) -> {
+            System.out.println(magazine.getDetails());
+        });
+        /**
+         * removes magazine
+         */
+        test.removeMagazineByPublisher("hampus e rar 2");
 
     }
 

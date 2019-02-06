@@ -1,5 +1,5 @@
 /*
- * Represent a newspaper by title, publisher, release per year and genre / field
+ * Represent a newspaper by title, publisher, release per year and genre / category
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -25,9 +25,9 @@ public class Magazine {
     private final String publisher;
 
     /**
-     * type of field the magazine is about.
+     * type of category the magazine is about.
      */
-    private final String field;
+    private final String category;
 
     /**
      * Number of publications per year of this magazine
@@ -35,27 +35,28 @@ public class Magazine {
     private final int releasePerYear;
 
     /**
-     * Assign the passed variables to local fields
+     * Assign the passed variables to local categories
      *
      * @param title The title of the magazine
      * @param publisher The publisher of the magazine
-     * @param field The field of the magazine
+     * @param category The category of the magazine
      * @param publicationsPerYear Number of publications per year
      */
-    public Magazine(String title, String publisher, String field, int releasePerYear) {
+    public Magazine(String title, String publisher, String category, int releasePerYear) {
         this.title = title;
         this.publisher = publisher;
-        this.field = field;
+        this.category = category;
         this.releasePerYear = releasePerYear;
     }
 
     /**
      * returns all data of the magazine
      *
-     * @return returns the magazine title, publisher, field and release per year
+     * @return returns the magazine title, publisher, category and release per
+     * year
      */
     public String getDetails() {
-        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + field + "\nRelease Per Year: " + releasePerYear;
+        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + category + "\nRelease Per Year: " + releasePerYear;
     }
 
     /**
@@ -77,12 +78,12 @@ public class Magazine {
     }
 
     /**
-     * Returns the field of the magazine
+     * Returns the category of the magazine
      *
-     * @return returns the type of field the magazine is
+     * @return returns the type of category the magazine is
      */
     public String getField() {
-        return this.field;
+        return this.category;
     }
 
     /**
