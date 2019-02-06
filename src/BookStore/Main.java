@@ -19,12 +19,14 @@ public class Main {
     public static void main(String[] args) {
 
         Database test = new Database();
+
         /**
          * add 12 magazines
          */
         for (int i = 1; i < 13; i++) {
             test.addMagazine("kristofer hattemaker " + i, "hampus e rar " + i, "dyreliv", 12);
         }
+
         /**
          * sells magazine by title
          */
@@ -37,11 +39,10 @@ public class Main {
         magazineByTitle.forEach((magazine) -> {
             System.out.println(magazine.getDetails());
         });
+
         /**
          * removes magazine
          */
         test.removeMagazineByPublisher("hampus e rar 2");
-
     }
-
 }

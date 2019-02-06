@@ -94,5 +94,4 @@ public class Magazine {
     public int getReleasePerYear() {
         return this.releasePerYear;
     }
-
 }
