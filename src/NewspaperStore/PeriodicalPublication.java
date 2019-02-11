@@ -1,31 +1,31 @@
 /*
- * Represent a newspaper by title, publisher, release per year and genre / field
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * represent periodical publication
+ * represented by title, publisher, release per year, type and genre / field
  */
-package BookStore;
+package NewspaperStore;
 
 /**
  *
  * @author Ultrareidar
  */
-public class Newspaper {
+public class PeriodicalPublication {
 
     private final String title;
     private final String publisher;
+    private final String type;
     private final String field;
     private final int releasePerYear;
 
-    public Newspaper(String title, String publisher, String field, int releasePerYear) {
+    public PeriodicalPublication(String title, String publisher, String type, String field, int releasePerYear) {
         this.title = title;
         this.publisher = publisher;
+        this.type = type;
         this.field = field;
         this.releasePerYear = releasePerYear;
     }
 
     public String getDetails() {
-        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + field + "\nRelease Per Year: " + releasePerYear;
+        return "title: " + title + "    publisher: " + publisher + "   type: " + type + "  field: " + field + "    release per year: " + releasePerYear;
     }
 
     public String getTitle() {
@@ -34,6 +34,10 @@ public class Newspaper {
 
     public String getPublisher() {
         return this.publisher;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     public String getField() {

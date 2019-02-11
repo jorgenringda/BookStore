@@ -18,13 +18,13 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        Database test = new Database();
+        MagazineDatabase test = new MagazineDatabase();
 
         /**
          * add 12 magazines
          */
         for (int i = 1; i < 13; i++) {
-            test.addMagazine("kristofer hattemaker " + i, "hampus e rar " + i, "dyreliv", 12);
+            test.addMagazine("kristofer hattemaker " + i, "", "dyreliv", 12);
         }
 
         /**
@@ -33,7 +33,7 @@ public class Main {
         test.sellMagazineByTitle("kristofer hattemaker 2");
 
         /**
-         * print out alla magazine with the title contains "kristofer ha"
+         * print out all magazine with the title contains "kristofer ha"
          */
         ArrayList<Magazine> magazineByTitle = test.getMagazineByTitle("kristofer ha");
         magazineByTitle.forEach((magazine) -> {

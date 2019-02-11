@@ -14,25 +14,27 @@ package BookStore;
  */
 public class Magazine {
 
+    boolean valid = true;
+
     /**
      * The magazine title
      */
-    private final String title;
+    private String title;
 
     /**
      * The publisher name
      */
-    private final String publisher;
+    private String publisher;
 
     /**
      * type of category the magazine is about.
      */
-    private final String category;
+    private String category;
 
     /**
      * Number of publications per year of this magazine
      */
-    private final int releasePerYear;
+    private int releasePerYear;
 
     /**
      * Assign the passed variables to local categories
@@ -43,10 +45,10 @@ public class Magazine {
      * @param publicationsPerYear Number of publications per year
      */
     public Magazine(String title, String publisher, String category, int releasePerYear) {
-        this.title = title;
-        this.publisher = publisher;
-        this.category = category;
-        this.releasePerYear = releasePerYear;
+        setTitle(title);
+        setPublisher(publisher);
+        setCategory(category);
+        setReleasePerYear(releasePerYear);
     }
 
     /**
@@ -82,7 +84,7 @@ public class Magazine {
      *
      * @return returns the type of category the magazine is
      */
-    public String getField() {
+    public String getCategory() {
         return this.category;
     }
 
@@ -93,5 +95,55 @@ public class Magazine {
      */
     public int getReleasePerYear() {
         return this.releasePerYear;
+    }
+
+    public void setTitle(String title) {
+        if (!title.isEmpty()) {
+            if (title != null) {
+                this.title = title;
+            }
+        } else {
+            System.out.println("No title added");
+            System.out.println("Magazine is not valid");
+            valid = false;
+        }
+    }
+
+    public void setPublisher(String publisher) {
+        if (!publisher.isEmpty()) {
+            if (publisher != null) {
+                this.publisher = publisher;
+            }
+        } else {
+            System.out.println("No publisher added");
+            System.out.println("Magazine is not valid");
+            valid = false;
+        }
+    }
+
+    public void setCategory(String category) {
+        if (!category.isEmpty()) {
+            if (category != null) {
+                this.category = category;
+            }
+        } else {
+            System.out.println("No category added");
+            System.out.println("Magazine is not valid");
+            valid = false;
+        }
+    }
+
+    public void setReleasePerYear(int releasePerYear) {
+        if (releasePerYear <= 0) {
+            System.out.println("No release per year added");
+            System.out.println("Magazine is not valid");
+            valid = false;
+        } else {
+            this.releasePerYear = releasePerYear;
+        }
+    }
+
+    public boolean isMagazineValid() {
+        return valid;
     }
 }
