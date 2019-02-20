@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * MagazineDatabase for storing magazines
+ * MagazineRegister for storing magazines
  * <ul>
  * <li> Add Magazine </li>
  * <li> Sell magazine by title </li>
@@ -26,11 +26,11 @@ import java.util.Iterator;
  * @author Ultrareidar
  * @version V1.0
  */
-public class MagazineDatabase {
+public class MagazineRegister {
 
     private final ArrayList<Magazine> magazine;
 
-    public MagazineDatabase() {
+    public MagazineRegister() {
         magazine = new ArrayList<>();
     }
 
@@ -137,7 +137,7 @@ public class MagazineDatabase {
         } else {
             System.out.print(clock() + " " + index + ": ");
             Magazine publication = magazine.get(index);
-            System.out.println(publication.getDetails());
+            System.out.println(getDetails(index));
         }
     }
 
@@ -147,11 +147,20 @@ public class MagazineDatabase {
     public void listAllMagazine() {
         System.out.println("");
         int index = 0;
-        while (index < magazine.size()) {
-            Magazine publication = magazine.get(index);
-            System.out.println(publication.getDetails());
-            index++;
+        if (magazine.isEmpty()) {
+            System.out.println("No magazine to list");
+        } else {
+            while (index < magazine.size()) {
+                System.out.println(getDetails(index));
+                index++;
+            }
         }
+    }
+
+    public String getDetails(int index) {
+        Magazine publication = magazine.get(index);
+        String details = "Title: " + publication.getTitle() + "\nPublisher: " + publication.getPublisher() + "\nField: " + publication.getCategory() + "\nRelease Per Year: " + publication.getReleasePerYear();
+        return details;
     }
 
     /**
@@ -169,8 +178,13 @@ public class MagazineDatabase {
                 for (Magazine paper : magazine) {
                     if (paper.getTitle().toUpperCase().contains(title.toUpperCase())) {
                         magazineContains.add(paper);
+                        System.out.println(getDetails(magazine.indexOf(paper)));
                     }
                 }
+                if (magazineContains.isEmpty()) {
+                    System.out.println("Didnt find the magazine you searched for");
+                }
+
             }
         } else {
             System.out.println("Don't have a title to search for");
@@ -191,9 +205,13 @@ public class MagazineDatabase {
         if (!publisher.isEmpty()) {
             if (publisher != null) {
                 for (Magazine paper : magazine) {
-                    if (paper.getTitle().toUpperCase().contains(publisher.toUpperCase())) {
+                    if (paper.getPublisher().toUpperCase().contains(publisher.toUpperCase())) {
                         magazineContains.add(paper);
+                        System.out.println(getDetails(magazine.indexOf(paper)));
                     }
+                }
+                if (magazineContains.isEmpty()) {
+                    System.out.println("Didnt find the magazine you searched for");
                 }
             }
         } else {

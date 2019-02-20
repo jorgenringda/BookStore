@@ -51,16 +51,15 @@ public class Magazine {
         setReleasePerYear(releasePerYear);
     }
 
-    /**
-     * returns all data of the magazine
-     *
-     * @return returns the magazine title, publisher, category and release per
-     * year
-     */
-    public String getDetails() {
-        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + category + "\nRelease Per Year: " + releasePerYear;
-    }
-
+//    /**
+//     * returns all data of the magazine
+//     *
+//     * @return returns the magazine title, publisher, category and release per
+//     * year
+//     */
+//    public String getDetails() {
+//        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + category + "\nRelease Per Year: " + releasePerYear;
+//    }
     /**
      * Returns the title of the magazine
      *
@@ -103,8 +102,8 @@ public class Magazine {
                 this.title = title;
             }
         } else {
-            System.out.println("No title added");
-            System.out.println("Magazine is not valid");
+//            System.out.println("No title added");
+//            System.out.println("Magazine is not valid");
             valid = false;
         }
     }
@@ -115,8 +114,8 @@ public class Magazine {
                 this.publisher = publisher;
             }
         } else {
-            System.out.println("No publisher added");
-            System.out.println("Magazine is not valid");
+//            System.out.println("No publisher added");
+//            System.out.println("Magazine is not valid");
             valid = false;
         }
     }
@@ -127,16 +126,16 @@ public class Magazine {
                 this.category = category;
             }
         } else {
-            System.out.println("No category added");
-            System.out.println("Magazine is not valid");
+//            System.out.println("No category added");
+//            System.out.println("Magazine is not valid");
             valid = false;
         }
     }
 
     public void setReleasePerYear(int releasePerYear) {
         if (releasePerYear <= 0) {
-            System.out.println("No release per year added");
-            System.out.println("Magazine is not valid");
+//            System.out.println("No release per year added");
+//            System.out.println("Magazine is not valid");
             valid = false;
         } else {
             this.releasePerYear = releasePerYear;
