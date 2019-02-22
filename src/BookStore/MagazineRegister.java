@@ -71,11 +71,11 @@ public class MagazineRegister {
                     }
                 }
                 if (!found) {
-                    System.out.println(clock() + " magazine is not sold");
+                    errorPrint(1);
                 }
             }
         } else {
-            System.out.println("Don't have a title to search for");
+            errorPrint(2);
         }
     }
 
@@ -86,19 +86,16 @@ public class MagazineRegister {
      * @param index set number of the magazine that is going to be sold.
      */
     public void sellMagazineByIndex(int index) {
-        boolean found = false;
-        if (index < 0) {
-            System.out.println("index not vaild");
-        } else {
-            if (indexVaild(index)) {
-                found = true;
-                Magazine sellMagazine = magazine.get(index);
-                System.out.println(clock() + " " + sellMagazine.getTitle() + " is sold");
-                magazine.remove(index);
-            }
-            if (!found) {
-                System.out.println(clock() + " magazine is not sold");
-            }
+        boolean found = indexVaild(index);
+
+        if (indexVaild(index)) {
+            found = true;
+            Magazine sellMagazine = magazine.get(index);
+            System.out.println(clock() + " " + sellMagazine.getTitle() + " is sold");
+            magazine.remove(index);
+        }
+        if (!found) {
+            errorPrint(1);
         }
     }
 
@@ -111,13 +108,13 @@ public class MagazineRegister {
     private boolean indexVaild(int index) {
         boolean valid = false;
         if (index < 0) {
-            System.out.println("index not vaild");
+            errorPrint(3);
         } else {
             if (index < 0) {
-                System.out.println("Index cannot be negative: " + index);
+                errorPrint(4);
                 valid = false;
             } else if (index >= magazine.size()) {
-                System.out.println("Index is too large: " + index);
+                errorPrint(5);
                 valid = false;
             } else {
                 valid = true;
@@ -130,37 +127,26 @@ public class MagazineRegister {
      * List magazine by given index and print out.
      *
      * @param index set number of the magazine that is going to listed
-     */
-    public void listMagazineByIndex(int index) {
-        if (index < 0) {
-            System.out.println("index not vaild");
-        } else {
-            System.out.print(clock() + " " + index + ": ");
-            Magazine publication = magazine.get(index);
-            System.out.println(getDetails(index));
-        }
-    }
-
-    /**
+     *
+     * public void listMagazineByIndex(int index) { if (indexVaild(index) ==
+     * true) { System.out.print(clock() + " " + index + ": "); Magazine
+     * publication = magazine.get(index); System.out.println(getDetails(index));
+     * } } /
+     *
+     * /**
      * List all magazines and print it out.
+     * @return
      */
-    public void listAllMagazine() {
-        System.out.println("");
-        int index = 0;
+    public ArrayList<Magazine> listAllMagazine() {
         if (magazine.isEmpty()) {
-            System.out.println("No magazine to list");
-        } else {
-            while (index < magazine.size()) {
-                System.out.println(getDetails(index));
-                index++;
-            }
+            errorPrint(6);
         }
+        return magazine;
     }
 
-    public String getDetails(int index) {
+    public Magazine getMagazine(int index) {
         Magazine publication = magazine.get(index);
-        String details = "Title: " + publication.getTitle() + "\nPublisher: " + publication.getPublisher() + "\nField: " + publication.getCategory() + "\nRelease Per Year: " + publication.getReleasePerYear();
-        return details;
+        return publication;
     }
 
     /**
@@ -178,16 +164,16 @@ public class MagazineRegister {
                 for (Magazine paper : magazine) {
                     if (paper.getTitle().toUpperCase().contains(title.toUpperCase())) {
                         magazineContains.add(paper);
-                        System.out.println(getDetails(magazine.indexOf(paper)));
+                        //System.out.println(getDetails(magazine.indexOf(paper)));
                     }
                 }
                 if (magazineContains.isEmpty()) {
-                    System.out.println("Didnt find the magazine you searched for");
+                    errorPrint(7);
                 }
 
             }
         } else {
-            System.out.println("Don't have a title to search for");
+            errorPrint(8);
         }
         return magazineContains;
     }
@@ -207,15 +193,15 @@ public class MagazineRegister {
                 for (Magazine paper : magazine) {
                     if (paper.getPublisher().toUpperCase().contains(publisher.toUpperCase())) {
                         magazineContains.add(paper);
-                        System.out.println(getDetails(magazine.indexOf(paper)));
+                        //System.out.println(getDetails(magazine.indexOf(paper)));
                     }
                 }
                 if (magazineContains.isEmpty()) {
-                    System.out.println("Didnt find the magazine you searched for");
+                    errorPrint(7);
                 }
             }
         } else {
-            System.out.println("Don't have a publisher to search for");
+            errorPrint(9);
         }
         return magazineContains;
     }
@@ -240,11 +226,11 @@ public class MagazineRegister {
                     }
                 }
                 if (!found) {
-                    System.out.println(clock() + " magazine is not removed, magazine " + title + " does not exsist");
+                    errorPrint(10);
                 }
             }
         } else {
-            System.out.println("Don't have a title to search for");
+            errorPrint(8);
         }
     }
 
@@ -268,11 +254,11 @@ public class MagazineRegister {
                     }
                 }
                 if (!found) {
-                    System.out.println(clock() + " magazine is not removed, magazine publisher " + publisher + " does not exist");
+                    errorPrint(11);
                 }
             }
         } else {
-            System.out.println("Don't have a publisher to search for");
+            errorPrint(9);
         }
     }
 
@@ -281,13 +267,57 @@ public class MagazineRegister {
      *
      * @return clock return real time clock as a string
      */
-    public String clock() {
+    public StringBuilder clock() {
+        StringBuilder clock = new StringBuilder();
         LocalTime time = LocalTime.now();
-        String minute = (time.getMinute() > 9)
-                ? ("" + time.getMinute()) : ("0" + time.getMinute());
-        String hour = (time.getHour() > 9)
-                ? ("" + time.getHour()) : ("0" + time.getHour());
-        String clock = hour + " : " + minute;
+        clock.append("\nTime: ");
+        clock.append((time.getHour() > 9)
+                ? ("" + time.getHour()) : ("0" + time.getHour()));
+        clock.append(" : ");
+        clock.append((time.getMinute() > 9)
+                ? ("" + time.getMinute()) : ("0" + time.getMinute()));
         return clock;
+    }
+
+    private void errorPrint(int index) {
+        StringBuilder errorString = new StringBuilder();
+        errorString.append("\nERROR: ");
+        int error = index;
+        switch (error) {
+            case 1:
+                errorString.append(" magazine is not sold");
+                break;
+            case 2:
+                errorString.append("Don't have a title to search for");
+                break;
+            case 3:
+                errorString.append("index not vaild");
+                break;
+            case 4:
+                errorString.append("Index cannot be negative");
+                break;
+            case 5:
+                errorString.append("Index is too large");
+                break;
+            case 6:
+                errorString.append("No magazine to list");
+                break;
+            case 7:
+                errorString.append("Didnt find the magazine you searched for");
+                break;
+            case 8:
+                errorString.append("Don't have a title to search for");
+                break;
+            case 9:
+                errorString.append("Don't have a publisher to search for");
+                break;
+            case 10:
+                errorString.append("Magazine is not removed, magazine title does not exsist");
+                break;
+            case 11:
+                errorString.append("Magazine is not removed, magazine publisher does not exist");
+                break;
+        }
+        System.out.println(errorString);
     }
 }

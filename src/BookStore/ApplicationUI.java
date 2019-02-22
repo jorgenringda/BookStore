@@ -2,6 +2,7 @@ package BookStore;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -102,7 +103,7 @@ public class ApplicationUI {
         int maxMenuItemNumber = menuItems.length + 1;
         // Add the "Exit"-choice to the menu
         System.out.println(maxMenuItemNumber + ". Exit\n");
-        System.out.println("Please choose menu item (1-" + maxMenuItemNumber + "): ");
+        System.out.println("Please choose menu item (1-" + maxMenuItemNumber + "): \n");
         // Read input from user
         Scanner reader = new Scanner(System.in);
         int menuSelection = reader.nextInt();
@@ -115,6 +116,7 @@ public class ApplicationUI {
     private String getStringInput() {
         Scanner reader = new Scanner(System.in);
         String input = reader.next();
+        System.out.println();
 
         return input;
     }
@@ -125,7 +127,7 @@ public class ApplicationUI {
         try {
             input = reader.nextInt();
         } catch (InputMismatchException error) {
-            System.out.println("please enter a valid number");
+            System.out.println("Please enter a valid number");
             input = getIntInput();
         }
         return input;
@@ -145,7 +147,11 @@ public class ApplicationUI {
      * Lists all the products/literature in the register
      */
     private void listAllProducts() {
-        magazine.listAllMagazine();
+        Iterator<Magazine> test = magazine.listAllMagazine().iterator();
+        while (test.hasNext()) {
+            System.out.println(getDetails(test.next()));
+        }
+        System.out.println(magazine.clock());
     }
 
     /**
@@ -177,13 +183,21 @@ public class ApplicationUI {
     private void searchProductByTitle() {
         System.out.println("type title of magazine: ");
         String title = getStringInput();
-        magazine.getMagazineByTitle(title);
+        Iterator<Magazine> test = magazine.getMagazineByTitle(title).iterator();
+        while (test.hasNext()) {
+            System.out.println(getDetails(test.next()));
+        }
+        System.out.println(magazine.clock());
     }
 
     private void searchProductByPublisher() {
         System.out.println("type publisher of magazine: ");
         String publisher = getStringInput();
-        magazine.getMagazineByPublisher(publisher);
+        Iterator<Magazine> test = magazine.getMagazineByPublisher(publisher).iterator();
+        while (test.hasNext()) {
+            System.out.println(getDetails(test.next()));
+        }
+        System.out.println(magazine.clock());
     }
 
     private void removeProductByTitle() {
@@ -202,4 +216,17 @@ public class ApplicationUI {
         }
     }
 
+    private StringBuilder getDetails(Magazine publication) {
+        StringBuilder details = new StringBuilder();
+        details.append("\nTitle: ");
+        details.append(publication.getTitle());
+        details.append("\nPublisher: ");
+        details.append(publication.getPublisher());
+        details.append("\nCategory: ");
+        details.append(publication.getCategory());
+        details.append("\nRelease Per Year: ");
+        details.append(publication.getReleasePerYear());
+        details.append("\n");
+        return details;
+    }
 }
