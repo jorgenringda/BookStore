@@ -30,6 +30,17 @@ public class MagazineRegister {
 
     private final ArrayList<Magazine> magazine;
 
+    /**
+     * defining variables to use in switch-case for print out error message.
+     */
+    private enum errorMessage {
+        notSold, noTitle, indexInvalid, negativeIndex,
+        indexToLarge, emptyList, noMagazine, noPublisher,
+        notRemovedTitle, notRemovedPublisher, magazineNotAdded,
+    }
+
+    private String magazineError = "";
+
     public MagazineRegister() {
         magazine = new ArrayList<>();
     }
@@ -44,10 +55,14 @@ public class MagazineRegister {
      */
     public void addMagazine(String title, String publisher,
             String category, int releasePerYear) {
-        Magazine magazine1 = new Magazine(title, publisher, category, releasePerYear);
+        Magazine magazine1 = new Magazine(title, publisher,
+                category, releasePerYear);
         if (magazine1.isMagazineValid()) {
             magazine.add(magazine1);
             System.out.println(clock() + " Added " + title);
+        } else {
+            magazineError = magazine1.errorMessage();
+            errorPrint(errorMessage.magazineNotAdded);
         }
     }
 
@@ -58,24 +73,26 @@ public class MagazineRegister {
      * @param title contains the set title as a string
      */
     public void sellMagazineByTitle(String title) {
-        if (!title.isEmpty()) {
-            if (title != null) {
+        if (title != null) {
+            if (!title.isEmpty()) {
                 boolean found = false;
                 Iterator<Magazine> it = this.magazine.iterator();
                 while (it.hasNext() && !found) {
                     Magazine paper = it.next();
-                    if (paper.getTitle().toUpperCase().equals(title.toUpperCase())) {
+                    if (paper.getTitle().toUpperCase()
+                            .equals(title.toUpperCase())) {
                         found = true;
-                        System.out.println(clock() + " " + paper.getTitle() + " is sold");
+                        System.out.println(clock() + " "
+                                + paper.getTitle() + " is sold");
                         magazine.remove(paper);
                     }
                 }
                 if (!found) {
-                    errorPrint(1);
+                    errorPrint(errorMessage.notSold);
                 }
             }
         } else {
-            errorPrint(2);
+            errorPrint(errorMessage.noTitle);
         }
     }
 
@@ -91,11 +108,12 @@ public class MagazineRegister {
         if (indexVaild(index)) {
             found = true;
             Magazine sellMagazine = magazine.get(index);
-            System.out.println(clock() + " " + sellMagazine.getTitle() + " is sold");
+            System.out.println(clock() + " "
+                    + sellMagazine.getTitle() + " is sold");
             magazine.remove(index);
         }
         if (!found) {
-            errorPrint(1);
+            errorPrint(errorMessage.notSold);
         }
     }
 
@@ -108,13 +126,13 @@ public class MagazineRegister {
     private boolean indexVaild(int index) {
         boolean valid = false;
         if (index < 0) {
-            errorPrint(3);
+            errorPrint(errorMessage.indexInvalid);
         } else {
             if (index < 0) {
-                errorPrint(4);
+                errorPrint(errorMessage.negativeIndex);
                 valid = false;
             } else if (index >= magazine.size()) {
-                errorPrint(5);
+                errorPrint(errorMessage.indexToLarge);
                 valid = false;
             } else {
                 valid = true;
@@ -124,24 +142,15 @@ public class MagazineRegister {
     }
 
     /**
-     * List magazine by given index and print out.
-     *
-     * @param index set number of the magazine that is going to listed
-     *
-     * public void listMagazineByIndex(int index) { if (indexVaild(index) ==
-     * true) { System.out.print(clock() + " " + index + ": "); Magazine
-     * publication = magazine.get(index); System.out.println(getDetails(index));
-     * } } /
-     *
-     * /**
      * List all magazines and print it out.
-     * @return
+     *
+     * @return magazine.iterator Returns iterator of ArrayList of magazines
      */
-    public ArrayList<Magazine> listAllMagazine() {
+    public Iterator<Magazine> listAllMagazine() {
         if (magazine.isEmpty()) {
-            errorPrint(6);
+            errorPrint(errorMessage.emptyList);
         }
-        return magazine;
+        return magazine.iterator();
     }
 
     public Magazine getMagazine(int index) {
@@ -157,25 +166,25 @@ public class MagazineRegister {
      * @return magazineContains an ArrayList that contains all the object of
      * type magazine that contains the title.
      */
-    public ArrayList<Magazine> getMagazineByTitle(String title) {
+    public Iterator<Magazine> getMagazineByTitle(String title) {
         ArrayList<Magazine> magazineContains = new ArrayList<>();
-        if (!title.isEmpty()) {
-            if (title != null) {
+        if (title != null) {
+            if (!title.isEmpty()) {
                 for (Magazine paper : magazine) {
-                    if (paper.getTitle().toUpperCase().contains(title.toUpperCase())) {
+                    if (paper.getTitle().toUpperCase()
+                            .contains(title.toUpperCase())) {
                         magazineContains.add(paper);
-                        //System.out.println(getDetails(magazine.indexOf(paper)));
                     }
                 }
                 if (magazineContains.isEmpty()) {
-                    errorPrint(7);
+                    errorPrint(errorMessage.noMagazine);
                 }
 
             }
         } else {
-            errorPrint(8);
+            errorPrint(errorMessage.noTitle);
         }
-        return magazineContains;
+        return magazineContains.iterator();
     }
 
     /**
@@ -186,24 +195,24 @@ public class MagazineRegister {
      * @return magazineContains an ArrayList that contains all the object of
      * type magazine that contains the publisher.
      */
-    public ArrayList<Magazine> getMagazineByPublisher(String publisher) {
+    public Iterator<Magazine> getMagazineByPublisher(String publisher) {
         ArrayList<Magazine> magazineContains = new ArrayList<>();
-        if (!publisher.isEmpty()) {
-            if (publisher != null) {
+        if (publisher != null) {
+            if (!publisher.isEmpty()) {
                 for (Magazine paper : magazine) {
-                    if (paper.getPublisher().toUpperCase().contains(publisher.toUpperCase())) {
+                    if (paper.getPublisher().toUpperCase()
+                            .contains(publisher.toUpperCase())) {
                         magazineContains.add(paper);
-                        //System.out.println(getDetails(magazine.indexOf(paper)));
                     }
                 }
                 if (magazineContains.isEmpty()) {
-                    errorPrint(7);
+                    errorPrint(errorMessage.noMagazine);
                 }
             }
         } else {
-            errorPrint(9);
+            errorPrint(errorMessage.noPublisher);
         }
-        return magazineContains;
+        return magazineContains.iterator();
     }
 
     /**
@@ -214,23 +223,25 @@ public class MagazineRegister {
      */
     public void removeMagazineByTitle(String title) {
         boolean found = false;
-        if (!title.isEmpty()) {
-            if (title != null) {
+        if (title != null) {
+            if (!title.isEmpty()) {
                 Iterator<Magazine> it = this.magazine.iterator();
                 while (it.hasNext() && !found) {
                     Magazine paper = it.next();
-                    if (paper.getTitle().toUpperCase().equals(title.toUpperCase())) {
+                    if (paper.getTitle().toUpperCase()
+                            .equals(title.toUpperCase())) {
                         found = true;
-                        System.out.println(clock() + " " + paper.getTitle() + " is removed");
+                        System.out.println(clock() + " "
+                                + paper.getTitle() + " is removed");
                         magazine.remove(paper);
                     }
                 }
                 if (!found) {
-                    errorPrint(10);
+                    errorPrint(errorMessage.notRemovedTitle);
                 }
             }
         } else {
-            errorPrint(8);
+            errorPrint(errorMessage.noTitle);
         }
     }
 
@@ -242,23 +253,25 @@ public class MagazineRegister {
      */
     public void removeMagazineByPublisher(String publisher) {
         boolean found = false;
-        if (!publisher.isEmpty()) {
-            if (publisher != null) {
+        if (publisher != null) {
+            if (!publisher.isEmpty()) {
                 Iterator<Magazine> it = this.magazine.iterator();
                 while (it.hasNext() && !found) {
                     Magazine paper = it.next();
-                    if (paper.getPublisher().toUpperCase().equals(publisher.toUpperCase())) {
+                    if (paper.getPublisher().toUpperCase()
+                            .equals(publisher.toUpperCase())) {
                         found = true;
-                        System.out.println(clock() + " " + paper.getPublisher() + " is removed");
+                        System.out.println(clock() + " "
+                                + paper.getPublisher() + " is removed");
                         magazine.remove(paper);
                     }
                 }
                 if (!found) {
-                    errorPrint(11);
+                    errorPrint(errorMessage.notRemovedPublisher);
                 }
             }
         } else {
-            errorPrint(9);
+            errorPrint(errorMessage.noPublisher);
         }
     }
 
@@ -279,43 +292,46 @@ public class MagazineRegister {
         return clock;
     }
 
-    private void errorPrint(int index) {
+    private void errorPrint(errorMessage error) {
         StringBuilder errorString = new StringBuilder();
         errorString.append("\nERROR: ");
-        int error = index;
         switch (error) {
-            case 1:
-                errorString.append(" magazine is not sold");
+            case notSold:
+                errorString.append("Magazine is not sold");
                 break;
-            case 2:
+            case noTitle:
                 errorString.append("Don't have a title to search for");
                 break;
-            case 3:
+            case indexInvalid:
                 errorString.append("index not vaild");
                 break;
-            case 4:
+            case negativeIndex:
                 errorString.append("Index cannot be negative");
                 break;
-            case 5:
+            case indexToLarge:
                 errorString.append("Index is too large");
                 break;
-            case 6:
+            case emptyList:
                 errorString.append("No magazine to list");
                 break;
-            case 7:
+            case noMagazine:
                 errorString.append("Didnt find the magazine you searched for");
                 break;
-            case 8:
-                errorString.append("Don't have a title to search for");
-                break;
-            case 9:
+            case noPublisher:
                 errorString.append("Don't have a publisher to search for");
                 break;
-            case 10:
-                errorString.append("Magazine is not removed, magazine title does not exsist");
+            case notRemovedTitle:
+                errorString.append("Magazine is not removed, "
+                        + "magazine title does not exsist");
                 break;
-            case 11:
-                errorString.append("Magazine is not removed, magazine publisher does not exist");
+            case notRemovedPublisher:
+                errorString.append("Magazine is not removed, "
+                        + "magazine publisher does not exist");
+                break;
+            case magazineNotAdded:
+                errorString.append("Magazine is not added, "
+                        + "input is not correct\n");
+                errorString.append(magazineError);
                 break;
         }
         System.out.println(errorString);

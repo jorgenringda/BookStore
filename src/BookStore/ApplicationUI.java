@@ -8,28 +8,32 @@ import java.util.Scanner;
 /**
  * Makes up the user interface (text based) of the application. Responsible for
  * all user interaction, like displaying the menu and receiving input from the
- * user.
+ * user
  *
  * @author Ultrareidar
  * @version 1.0
  */
 public class ApplicationUI {
 
-    // The menu tha will be displayed. Please edit/alter the menu
-    // to fit your application (i.e. replace "prodct" with "litterature"
-    // etc.
-    MagazineRegister magazine = new MagazineRegister();
-    private String[] menuItems = {
-        "1. Add new magazine",
-        "2. List all magazine",
-        "3. Search magazine by title",
-        "4. Search a magazine by publisher",
-        "5. Remove a magazine by title",};
+    MagazineRegister magazine;
+
+    /**
+     * The menu that will be displayed.
+     */
+    private final String[] menuItems;
 
     /**
      * Creates an instance of the ApplicationUI User interface.
      */
     public ApplicationUI() {
+
+        this.magazine = new MagazineRegister();
+        this.menuItems = new String[]{
+            "1. Add new magazine",
+            "2. List all magazine",
+            "3. Search magazine by title",
+            "4. Search a magazine by publisher",
+            "5. Remove a magazine by title"};
     }
 
     /**
@@ -37,10 +41,7 @@ public class ApplicationUI {
      * user.
      */
     public void start() {
-        this.init();
-
         boolean quit = false;
-
         while (!quit) {
             try {
                 int menuSelection = this.showMenu();
@@ -66,7 +67,8 @@ public class ApplicationUI {
                         break;
 
                     case 6:
-                        System.out.println("\nThank you for using Application v0.1. Bye!\n");
+                        System.out.println("\nThank you for using "
+                                + "Application v0.1. Bye!\n");
                         quit = true;
                         break;
 
@@ -76,7 +78,8 @@ public class ApplicationUI {
                     typeToContinue();
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("\nERROR: Please provide a number between 1 and " + this.menuItems.length + "..\n");
+                System.out.println("\nERROR: Please provide a number "
+                        + "between 1 and " + this.menuItems.length + "..\n");
             }
         }
 
@@ -113,6 +116,11 @@ public class ApplicationUI {
         return menuSelection;
     }
 
+    /**
+     * method that returns input from user as a string
+     *
+     * @return input returns input typed by user as a string
+     */
     private String getStringInput() {
         Scanner reader = new Scanner(System.in);
         String input = reader.next();
@@ -121,9 +129,14 @@ public class ApplicationUI {
         return input;
     }
 
+    /**
+     * method that returns input from user as a integer
+     *
+     * @return input returns input typed by user as a integer
+     */
     private int getIntInput() {
         Scanner reader = new Scanner(System.in);
-        int input = 0;
+        int input;
         try {
             input = reader.nextInt();
         } catch (InputMismatchException error) {
@@ -133,21 +146,11 @@ public class ApplicationUI {
         return input;
     }
 
-    // ------ The methods below this line are "helper"-methods, used from the menu ----
-    // ------ All these methods are made privat, since they are only used by the menu ---
-    /**
-     * Initializes the application. Typically you would create the
-     * LiteratureRegistrer-instance here
-     */
-    private void init() {
-
-    }
-
     /**
      * Lists all the products/literature in the register
      */
     private void listAllProducts() {
-        Iterator<Magazine> test = magazine.listAllMagazine().iterator();
+        Iterator<Magazine> test = magazine.listAllMagazine();
         while (test.hasNext()) {
             System.out.println(getDetails(test.next()));
         }
@@ -155,11 +158,9 @@ public class ApplicationUI {
     }
 
     /**
-     * Add a new product/literature to the register. In this method you have to
-     * add code to ask the user for the necessary information you need to create
-     * an instance of the product, which you then send as a parameter to the
-     * addNewspaper()- method of the register. Remember to also handle invalid
-     * input from the user!!
+     * Add a new product/literature to the register. First reading the input
+     * value and stores it. When all variable is set its add the magazine if the
+     * inputs are valid.
      */
     private void addNewProduct() {
         System.out.println("Set title of magazine: ");
@@ -174,38 +175,45 @@ public class ApplicationUI {
     }
 
     /**
-     * Find and display a product based om name (title). As with the
-     * addNewProduct()-method, you have to ask the user for the string
-     * (name/title/publisher) to search for, and then use this string as input-
-     * parameter to the method in the register-object. Then, upon return from
-     * the register, you need to print the details of the found item.
+     * find the magazine or magazines that contains the title typed by user
      */
     private void searchProductByTitle() {
         System.out.println("type title of magazine: ");
         String title = getStringInput();
-        Iterator<Magazine> test = magazine.getMagazineByTitle(title).iterator();
+        Iterator<Magazine> test = magazine.getMagazineByTitle(title);
         while (test.hasNext()) {
             System.out.println(getDetails(test.next()));
         }
         System.out.println(magazine.clock());
     }
 
+    /**
+     * find the magazine or magazines that contains the publisher typed by user
+     */
     private void searchProductByPublisher() {
         System.out.println("type publisher of magazine: ");
         String publisher = getStringInput();
-        Iterator<Magazine> test = magazine.getMagazineByPublisher(publisher).iterator();
+        Iterator<Magazine> test = magazine.getMagazineByPublisher(publisher);
         while (test.hasNext()) {
             System.out.println(getDetails(test.next()));
         }
         System.out.println(magazine.clock());
     }
 
+    /**
+     * removes the magazine that has the equals title to the input typed by user
+     */
     private void removeProductByTitle() {
         System.out.println("type title of magazine to be removed: ");
         String title = getStringInput();
         magazine.removeMagazineByTitle(title);
     }
 
+    /**
+     * method to stop the application until any key is typed. this is for not
+     * displaying the menu list, before the user have read the error message or
+     * other messages.
+     */
     private void typeToContinue() {
         System.out.println();
         System.out.println("type anything to contine ");
@@ -216,6 +224,12 @@ public class ApplicationUI {
         }
     }
 
+    /**
+     * builds a string which contains all info about the magazine we set
+     *
+     * @param publication magazine that we want to get information about
+     * @return details Returns all details about the magazine that is set.
+     */
     private StringBuilder getDetails(Magazine publication) {
         StringBuilder details = new StringBuilder();
         details.append("\nTitle: ");

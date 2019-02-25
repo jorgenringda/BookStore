@@ -16,6 +16,7 @@ public class Magazine {
 
     boolean valid = true;
 
+    StringBuilder error = new StringBuilder();
     /**
      * The magazine title
      */
@@ -97,45 +98,41 @@ public class Magazine {
     }
 
     public void setTitle(String title) {
-        if (!title.isEmpty()) {
-            if (title != null) {
+        if (title != null) {
+            if (!title.isEmpty()) {
                 this.title = title;
             }
         } else {
-//            System.out.println("No title added");
-//            System.out.println("Magazine is not valid");
+            error.append("Title is not valid input");
             valid = false;
         }
     }
 
     public void setPublisher(String publisher) {
-        if (!publisher.isEmpty()) {
-            if (publisher != null) {
+        if (publisher != null) {
+            if (!publisher.isEmpty()) {
                 this.publisher = publisher;
             }
         } else {
-//            System.out.println("No publisher added");
-//            System.out.println("Magazine is not valid");
+            error.append("Publisher is not valid input");
             valid = false;
         }
     }
 
     public void setCategory(String category) {
-        if (!category.isEmpty()) {
-            if (category != null) {
+        if (category != null) {
+            if (!category.isEmpty()) {
                 this.category = category;
             }
         } else {
-//            System.out.println("No category added");
-//            System.out.println("Magazine is not valid");
+            error.append("Category is not valid input");
             valid = false;
         }
     }
 
     public void setReleasePerYear(int releasePerYear) {
         if (releasePerYear <= 0) {
-//            System.out.println("No release per year added");
-//            System.out.println("Magazine is not valid");
+            error.append("Release per year is not valid input");
             valid = false;
         } else {
             this.releasePerYear = releasePerYear;
@@ -144,5 +141,10 @@ public class Magazine {
 
     public boolean isMagazineValid() {
         return valid;
+    }
+
+    public String errorMessage() {
+        return error.toString();
+
     }
 }
