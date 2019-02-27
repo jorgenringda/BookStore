@@ -14,9 +14,8 @@ import java.util.Iterator;
  * <ul>
  * <li> Add Magazine </li>
  * <li> Sell magazine by title </li>
- * <li> Sell magazine by index </li>
- * <li> List Magazine by index </li>
  * <li> List all magazine </li>
+ * <li> Get Magazine by index </li>
  * <li> Get magazine by title </li>
  * <li> Get magazine by publisher </li>
  * <li> Removes magazine by title </li>
@@ -52,30 +51,41 @@ public class MagazineRegister {
      * @param publisher contains the set publisher as a string
      * @param category contains the set category as a string
      * @param releasePerYear contains the set releaser per year as an integer
+     * @return magazineAdded returns at Boolean true or false if magazine is
+     * added or not
      */
-    public void addMagazine(String title, String publisher,
+    public boolean addMagazine(String title, String publisher,
             String category, int releasePerYear) {
-        Magazine magazine1 = new Magazine(title, publisher,
-                category, releasePerYear);
-        if (magazine1.isMagazineValid()) {
-            magazine.add(magazine1);
-            System.out.println(clock() + " Added " + title);
-        } else {
-            magazineError = magazine1.errorMessage();
+        boolean magazineAdded = false;
+        try {
+            Magazine magazine1 = new Magazine(title, publisher,
+                    category, releasePerYear);
+            if (magazine1.isMagazineValid()) {
+                magazine.add(magazine1);
+                System.out.println(clock() + " Added " + title);
+                magazineAdded = true;
+            } else {
+                magazineError = magazine1.errorMessage();
+                errorPrint(errorMessage.magazineNotAdded);
+            }
+        } catch (NullPointerException e) {
             errorPrint(errorMessage.magazineNotAdded);
         }
+        return magazineAdded;
     }
 
     /**
-     * Sells magazine by title, and removes it from the ArrayList. Print out
+     * Sells magazine by title, and removes it from the ArrayList.Print out
      * "magazine is not sold" if the magazine is not sold
      *
      * @param title contains the set title as a string
+     * @return found returns Boolean true or false, if it finds a magazine with
+     * give title or not.
      */
-    public void sellMagazineByTitle(String title) {
+    public boolean sellMagazineByTitle(String title) {
+        boolean found = false;
         if (title != null) {
             if (!title.isEmpty()) {
-                boolean found = false;
                 Iterator<Magazine> it = this.magazine.iterator();
                 while (it.hasNext() && !found) {
                     Magazine paper = it.next();
@@ -94,27 +104,7 @@ public class MagazineRegister {
         } else {
             errorPrint(errorMessage.noTitle);
         }
-    }
-
-    /**
-     * Sells magazine by index, and removes it from the ArrayList. When magazine
-     * is removed and print out, magazine is sold.
-     *
-     * @param index set number of the magazine that is going to be sold.
-     */
-    public void sellMagazineByIndex(int index) {
-        boolean found = indexVaild(index);
-
-        if (indexVaild(index)) {
-            found = true;
-            Magazine sellMagazine = magazine.get(index);
-            System.out.println(clock() + " "
-                    + sellMagazine.getTitle() + " is sold");
-            magazine.remove(index);
-        }
-        if (!found) {
-            errorPrint(errorMessage.notSold);
-        }
+        return found;
     }
 
     /**
@@ -153,6 +143,13 @@ public class MagazineRegister {
         return magazine.iterator();
     }
 
+    /**
+     * find and return magazine by index
+     *
+     * @param index Index the function is going to find the object, in the
+     * ArrayList
+     * @return publication Returns a magazine.
+     */
     public Magazine getMagazine(int index) {
         Magazine publication = magazine.get(index);
         return publication;

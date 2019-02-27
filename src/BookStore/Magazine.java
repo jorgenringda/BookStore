@@ -14,7 +14,7 @@ package BookStore;
  */
 public class Magazine {
 
-    boolean valid = true;
+    private boolean valid = true;
 
     StringBuilder error = new StringBuilder();
     /**
@@ -43,24 +43,16 @@ public class Magazine {
      * @param title The title of the magazine
      * @param publisher The publisher of the magazine
      * @param category The category of the magazine
-     * @param publicationsPerYear Number of publications per year
+     * @param releasePerYear the number of release per year of the magazine
      */
-    public Magazine(String title, String publisher, String category, int releasePerYear) {
+    public Magazine(String title, String publisher,
+            String category, int releasePerYear) {
         setTitle(title);
         setPublisher(publisher);
         setCategory(category);
         setReleasePerYear(releasePerYear);
     }
 
-//    /**
-//     * returns all data of the magazine
-//     *
-//     * @return returns the magazine title, publisher, category and release per
-//     * year
-//     */
-//    public String getDetails() {
-//        return "Title: " + title + "\nPublisher: " + publisher + "\nField: " + category + "\nRelease Per Year: " + releasePerYear;
-//    }
     /**
      * Returns the title of the magazine
      *
@@ -97,40 +89,62 @@ public class Magazine {
         return this.releasePerYear;
     }
 
-    public void setTitle(String title) {
-        if (title != null) {
-            if (!title.isEmpty()) {
-                this.title = title;
-            }
-        } else {
-            error.append("Title is not valid input");
-            valid = false;
+    /**
+     * sets the value of this.title from parameter title. also check if the
+     * value from parameter is valid
+     *
+     * @param title parameter contains an string with the title
+     */
+    private void setTitle(String title) {
+        if (title == null) {
+            title = "";
+        }
+        title = title.trim();
+        if (!title.isEmpty()) {
+            this.title = title;
         }
     }
 
-    public void setPublisher(String publisher) {
-        if (publisher != null) {
-            if (!publisher.isEmpty()) {
-                this.publisher = publisher;
-            }
-        } else {
-            error.append("Publisher is not valid input");
-            valid = false;
+    /**
+     * sets the value of this.publisher from parameter publisher. also check if
+     * the value from parameter is valid
+     *
+     * @param publisher parameter contains an string with the publisher
+     */
+    private void setPublisher(String publisher) {
+        if (publisher == null) {
+            publisher = "";
+        }
+        publisher = publisher.trim();
+        if (!title.isEmpty()) {
+            this.publisher = publisher;
         }
     }
 
-    public void setCategory(String category) {
-        if (category != null) {
-            if (!category.isEmpty()) {
-                this.category = category;
-            }
-        } else {
-            error.append("Category is not valid input");
-            valid = false;
+    /**
+     * sets the value of this.category from parameter category. also check if
+     * the value from parameter is valid
+     *
+     * @param category parameter contains an string with the category
+     */
+    private void setCategory(String category) {
+        if (category == null) {
+            category = "";
+        }
+        category = category.trim();
+        if (!title.isEmpty()) {
+            this.category = category;
         }
     }
 
-    public void setReleasePerYear(int releasePerYear) {
+    /**
+     * sets the value of this.releasePerYear from parameter releasePerYear. also
+     * check if the value from parameter is valid
+     *
+     * @param releasePerYear parameter contains an int with number of release
+     * per year
+     */
+    private void setReleasePerYear(int releasePerYear) {
         if (releasePerYear <= 0) {
             error.append("Release per year is not valid input");
             valid = false;
@@ -139,10 +153,22 @@ public class Magazine {
         }
     }
 
+    /**
+     * returns a Boolean saying true or false if the magazine is valid or
+     * invalid
+     *
+     * @return valid Boolean saying true or false if the magazine is valid or
+     * invalid
+     */
     public boolean isMagazineValid() {
         return valid;
     }
 
+    /**
+     * returns an error message in a a string contains error messages
+     *
+     * @return String with the error message
+     */
     public String errorMessage() {
         return error.toString();
 

@@ -75,7 +75,7 @@ public class ApplicationUI {
                     default:
                 }
                 if (!quit) {
-                    typeToContinue();
+                    typeEnterToContinue();
                 }
             } catch (InputMismatchException ime) {
                 System.out.println("\nERROR: Please provide a number "
@@ -210,13 +210,13 @@ public class ApplicationUI {
     }
 
     /**
-     * method to stop the application until any key is typed. this is for not
+     * method to stop the application until enter is pressed. this is for not
      * displaying the menu list, before the user have read the error message or
      * other messages.
      */
-    private void typeToContinue() {
+    private void typeEnterToContinue() {
         System.out.println();
-        System.out.println("type anything to contine ");
+        System.out.println("type enter to contine ");
         try {
             System.in.read();
         } catch (IOException error) {
@@ -234,11 +234,11 @@ public class ApplicationUI {
         StringBuilder details = new StringBuilder();
         details.append("\nTitle: ");
         details.append(publication.getTitle());
-        details.append("\nPublisher: ");
+        details.append("  |  Publisher: ");
         details.append(publication.getPublisher());
-        details.append("\nCategory: ");
+        details.append("  |  Category: ");
         details.append(publication.getCategory());
-        details.append("\nRelease Per Year: ");
+        details.append("  |  Release Per Year: ");
         details.append(publication.getReleasePerYear());
         details.append("\n");
         return details;
