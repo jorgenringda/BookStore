@@ -1,6 +1,7 @@
 package BookStore;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -16,6 +17,14 @@ import java.util.Scanner;
 public class ApplicationUI {
 
     MagazineRegister magazine;
+
+    /**
+     * defining variables to use in switch-case for print out error message.
+     */
+    private enum errorMessage {
+        noTitle, emptyList, noMagazine, noPublisher,
+        notRemovedTitle, magazineNotAdded,
+    }
 
     /**
      * The menu that will be displayed.
@@ -68,7 +77,7 @@ public class ApplicationUI {
 
                     case 6:
                         System.out.println("\nThank you for using "
-                                + "Application v0.1. Bye!\n");
+                                + "Application v3.1 Bye!\n");
                         quit = true;
                         break;
 
@@ -98,7 +107,7 @@ public class ApplicationUI {
      */
     private int showMenu() throws InputMismatchException {
 
-        System.out.println("\n**** Application v0.1 ****\n");
+        System.out.println("\n**** Application v3.1 ****\n");
         // Display the menu
         for (String menuItem : menuItems) {
             System.out.println(menuItem);
@@ -108,8 +117,7 @@ public class ApplicationUI {
         System.out.println(maxMenuItemNumber + ". Exit\n");
         System.out.println("Please choose menu item (1-" + maxMenuItemNumber + "): \n");
         // Read input from user
-        Scanner reader = new Scanner(System.in);
-        int menuSelection = reader.nextInt();
+        int menuSelection = getIntInput();
         if ((menuSelection < 1) || (menuSelection > maxMenuItemNumber)) {
             throw new InputMismatchException();
         }
@@ -150,11 +158,15 @@ public class ApplicationUI {
      * Lists all the products/literature in the register
      */
     private void listAllProducts() {
-        Iterator<Magazine> test = magazine.listAllMagazine();
-        while (test.hasNext()) {
-            System.out.println(getDetails(test.next()));
+        Iterator<Magazine> allMagazine = magazine.listAllMagazine();
+        if (allMagazine.hasNext()) {
+            while (allMagazine.hasNext()) {
+                System.out.println(getDetails(allMagazine.next()));
+            }
+            System.out.println(clock());
+        } else {
+            errorPrint(errorMessage.emptyList);
         }
-        System.out.println(magazine.clock());
     }
 
     /**
@@ -171,7 +183,11 @@ public class ApplicationUI {
         String category = getStringInput();
         System.out.println("Set release per year of magazine: ");
         int releasePerYear = getIntInput();
-        magazine.addMagazine(title, publisher, category, releasePerYear);
+        if (magazine.addMagazine(title, publisher, category, releasePerYear)) {
+            System.out.println(clock() + " Added " + title);
+        } else {
+            errorPrint(errorMessage.magazineNotAdded);
+        }
     }
 
     /**
@@ -180,11 +196,19 @@ public class ApplicationUI {
     private void searchProductByTitle() {
         System.out.println("type title of magazine: ");
         String title = getStringInput();
-        Iterator<Magazine> test = magazine.getMagazineByTitle(title);
-        while (test.hasNext()) {
-            System.out.println(getDetails(test.next()));
+        if (title == null) {
+            errorPrint(errorMessage.noTitle);
+        } else {
+            Iterator<Magazine> allMagazineByTitle = magazine.getMagazineByTitle(title);
+            if (allMagazineByTitle.hasNext()) {
+                while (allMagazineByTitle.hasNext()) {
+                    System.out.println(getDetails(allMagazineByTitle.next()));
+                }
+                System.out.println(clock());
+            } else {
+                errorPrint(errorMessage.noMagazine);
+            }
         }
-        System.out.println(magazine.clock());
     }
 
     /**
@@ -193,11 +217,19 @@ public class ApplicationUI {
     private void searchProductByPublisher() {
         System.out.println("type publisher of magazine: ");
         String publisher = getStringInput();
-        Iterator<Magazine> test = magazine.getMagazineByPublisher(publisher);
-        while (test.hasNext()) {
-            System.out.println(getDetails(test.next()));
+        if (publisher == null) {
+            errorPrint(errorMessage.noPublisher);
+        } else {
+            Iterator<Magazine> allMagazine = magazine.getMagazineByPublisher(publisher);
+            if (allMagazine.hasNext()) {
+                while (allMagazine.hasNext()) {
+                    System.out.println(getDetails(allMagazine.next()));
+                }
+                System.out.println(clock());
+            } else {
+                errorPrint(errorMessage.noMagazine);
+            }
         }
-        System.out.println(magazine.clock());
     }
 
     /**
@@ -206,7 +238,15 @@ public class ApplicationUI {
     private void removeProductByTitle() {
         System.out.println("type title of magazine to be removed: ");
         String title = getStringInput();
-        magazine.removeMagazineByTitle(title);
+        if (title == null) {
+            errorPrint(errorMessage.noTitle);
+        } else {
+            if (magazine.removeMagazineByTitle(title)) {
+                System.out.println("\n" + clock() + title + " is removed");
+            } else {
+                errorPrint(errorMessage.notRemovedTitle);
+            }
+        }
     }
 
     /**
@@ -242,5 +282,50 @@ public class ApplicationUI {
         details.append(publication.getReleasePerYear());
         details.append("\n");
         return details;
+    }
+
+    /**
+     * Reads real time clock, returns is a string in minutes and hours.
+     *
+     * @return clock return real time clock as a string
+     */
+    private StringBuilder clock() {
+        StringBuilder clock = new StringBuilder();
+        LocalTime time = LocalTime.now();
+        clock.append("\nTime: ");
+        clock.append((time.getHour() > 9)
+                ? ("" + time.getHour()) : ("0" + time.getHour()));
+        clock.append(" : ");
+        clock.append((time.getMinute() > 9)
+                ? ("" + time.getMinute()) : ("0" + time.getMinute()));
+        return clock;
+    }
+
+    private void errorPrint(errorMessage error) {
+        StringBuilder errorString = new StringBuilder();
+        errorString.append("\nERROR: ");
+        switch (error) {
+            case noTitle:
+                errorString.append("Don't have a title to use");
+                break;
+            case emptyList:
+                errorString.append("No magazine to list");
+                break;
+            case noMagazine:
+                errorString.append("Didnt find the magazine you searched for");
+                break;
+            case noPublisher:
+                errorString.append("Don't have a publisher to use");
+                break;
+            case notRemovedTitle:
+                errorString.append("Magazine is not removed, "
+                        + "magazine title does not exsist");
+                break;
+            case magazineNotAdded:
+                errorString.append("Magazine is not added, "
+                        + "input is not correct\n");
+                break;
+        }
+        System.out.println(errorString);
     }
 }

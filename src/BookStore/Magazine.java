@@ -102,6 +102,8 @@ public class Magazine {
         title = title.trim();
         if (!title.isEmpty()) {
             this.title = title;
+        } else {
+            valid = false;
         }
     }
 
@@ -116,8 +118,10 @@ public class Magazine {
             publisher = "";
         }
         publisher = publisher.trim();
-        if (!title.isEmpty()) {
+        if (!publisher.isEmpty()) {
             this.publisher = publisher;
+        } else {
+            valid = false;
         }
     }
 
@@ -132,8 +136,10 @@ public class Magazine {
             category = "";
         }
         category = category.trim();
-        if (!title.isEmpty()) {
+        if (!category.isEmpty()) {
             this.category = category;
+        } else {
+            valid = false;
         }
     }
 
@@ -146,7 +152,6 @@ public class Magazine {
      */
     private void setReleasePerYear(int releasePerYear) {
         if (releasePerYear <= 0) {
-            error.append("Release per year is not valid input");
             valid = false;
         } else {
             this.releasePerYear = releasePerYear;
@@ -162,15 +167,5 @@ public class Magazine {
      */
     public boolean isMagazineValid() {
         return valid;
-    }
-
-    /**
-     * returns an error message in a a string contains error messages
-     *
-     * @return String with the error message
-     */
-    public String errorMessage() {
-        return error.toString();
-
     }
 }

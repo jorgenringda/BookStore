@@ -5,7 +5,6 @@
  */
 package BookStore;
 
-import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +41,8 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of addMagazine method, of class MagazineRegister.
+     * Test of addMagazine method, adds invalid magazine, check if magazine can
+     * not be add.
      */
     @Test
     public void tryToAddInvalidMagazine() {
@@ -52,7 +52,8 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of addMagazine method, of class MagazineRegister.
+     * Test of addMagazine method, adds valid magazine, checks if magazine can
+     * be added
      */
     @Test
     public void tryToAddValidMagazine() {
@@ -61,25 +62,8 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of sellMagazineByTitle method, of class MagazineRegister.
-     */
-    @Test
-    public void tryToSellInvalidMagazine() {
-        assertEquals(false, test2.sellMagazineByTitle("fins ikkje"));
-    }
-
-    /**
-     * Test of sellMagazineByTitle method, of class MagazineRegister.
-     */
-    @Test
-    public void tryToSellValidMagazine() {
-        test2.addMagazine("ok", "ok", "ok", 1);
-        assertEquals(true, test2.sellMagazineByTitle("ok"));
-        test2.removeMagazineByTitle("ok");
-    }
-
-    /**
-     * Test of listAllMagazine method, of class MagazineRegister.
+     * Test of listAllMagazine method, test function that list all magazine
+     * tries to list all magazines when there is no magazine in the list
      */
     @Test
     public void testListAllMagazineWhenThereIsNoMagazineInRegister() {
@@ -87,17 +71,17 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of getMagazine method, of class MagazineRegister.
+     * Test of getMagazine method, test if the function get title.
      */
     @Test
     public void testGetValidMagazine() {
         test2.addMagazine("ok", "ok", "ok", 1);
-        assertEquals("ok", test2.getMagazine(0).getTitle());
+        assertEquals("ok", test2.getMagazineByTitle("ok").next().getTitle());
         test2.removeMagazineByTitle("ok");
     }
 
     /**
-     * Test of getMagazineByTitle method, of class MagazineRegister.
+     * Test of getMagazineByTitle method, checks if we can get a invalid title
      */
     @Test
     public void testGetMagazineByInvalidTitle() {
@@ -107,7 +91,8 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of getMagazineByPublisher method, of class MagazineRegister.
+     * Test of getMagazineByPublisher method, test if we can get a valid
+     * publisher
      */
     @Test
     public void testGetMagazineByValidPublisher() {
@@ -117,26 +102,14 @@ public class MagazineRegisterTest {
     }
 
     /**
-     * Test of removeMagazineByTitle method, of class MagazineRegister.
+     * Test of removeMagazineByTitle method, remove magazine by title, one i
+     * valid test, other one does not have the title we are looking for
      */
     @Test
     public void testRemoveMagazineByTitle() {
         test2.addMagazine("ok", "ok", "ok", 1);
         assertEquals(true, test2.getMagazineByTitle("ok").hasNext());
         test2.removeMagazineByTitle("ok");
-        assertEquals(false, test2.getMagazineByTitle("ok").hasNext());
-    }
-
-    /**
-     * Test of removeMagazineByPublisher method, of class MagazineRegister.
-     */
-    @Test
-    public void testRemoveInvalidAndValidMagazineByPublisher() {
-        test2.addMagazine("ok", "ok", "ok", 1);
-        assertEquals(true, test2.getMagazineByPublisher("ok").hasNext());
-        test2.removeMagazineByPublisher("fins ikkje");
-        assertEquals(true, test2.getMagazineByPublisher("ok").hasNext());
-        test2.removeMagazineByPublisher("ok");
-        assertEquals(false, test2.getMagazineByPublisher("ok").hasNext());
+        assertEquals(false, test2.getMagazineByTitle("fins ikkje").hasNext());
     }
 }
