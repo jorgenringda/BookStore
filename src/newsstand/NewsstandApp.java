@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BookStore;
+package newsstand;
 
 /**
  * The Main-class of the application. This class only holds the main()-method to
@@ -12,7 +12,7 @@ package BookStore;
  * @author Ultrareidar
  * @version 1.0
  */
-public class UIApp {
+public class NewsstandApp {
 
     /**
      * The main entry for the application.

@@ -1,7 +1,8 @@
-package BookStore;
+package newsstand;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -17,11 +18,12 @@ import java.util.Scanner;
 public class ApplicationUI {
 
     MagazineRegister magazine;
+    ArrayList<Magazine> removeMagazinesList;
 
     /**
      * defining variables to use in switch-case for print out error message.
      */
-    private enum errorMessage {
+    private enum ErrorMessage {
         noTitle, emptyList, noMagazine, noPublisher,
         notRemovedTitle, magazineNotAdded,
     }
@@ -77,7 +79,7 @@ public class ApplicationUI {
 
                     case 6:
                         System.out.println("\nThank you for using "
-                                + "Application v3.1 Bye!\n");
+                                + "Application v2.1 Bye!\n");
                         quit = true;
                         break;
 
@@ -107,7 +109,7 @@ public class ApplicationUI {
      */
     private int showMenu() throws InputMismatchException {
 
-        System.out.println("\n**** Application v3.1 ****\n");
+        System.out.println("\n**** Application v2.1 ****\n");
         // Display the menu
         for (String menuItem : menuItems) {
             System.out.println(menuItem);
@@ -115,7 +117,8 @@ public class ApplicationUI {
         int maxMenuItemNumber = menuItems.length + 1;
         // Add the "Exit"-choice to the menu
         System.out.println(maxMenuItemNumber + ". Exit\n");
-        System.out.println("Please choose menu item (1-" + maxMenuItemNumber + "): \n");
+        System.out.println("Please choose menu item (1-"
+                + maxMenuItemNumber + "): \n");
         // Read input from user
         int menuSelection = getIntInput();
         if ((menuSelection < 1) || (menuSelection > maxMenuItemNumber)) {
@@ -125,7 +128,7 @@ public class ApplicationUI {
     }
 
     /**
-     * method that returns input from user as a string
+     * Method that returns input from user as a string
      *
      * @return input returns input typed by user as a string
      */
@@ -138,7 +141,7 @@ public class ApplicationUI {
     }
 
     /**
-     * method that returns input from user as a integer
+     * Method that returns input from user as a integer
      *
      * @return input returns input typed by user as a integer
      */
@@ -148,7 +151,7 @@ public class ApplicationUI {
         try {
             input = reader.nextInt();
         } catch (InputMismatchException error) {
-            System.out.println("Please enter a valid number");
+            System.out.println("\nPlease enter a valid number\n");
             input = getIntInput();
         }
         return input;
@@ -158,14 +161,14 @@ public class ApplicationUI {
      * Lists all the products/literature in the register
      */
     private void listAllProducts() {
-        Iterator<Magazine> allMagazine = magazine.listAllMagazine();
+        Iterator<Magazine> allMagazine = magazine.getMagazinesIterator();
         if (allMagazine.hasNext()) {
             while (allMagazine.hasNext()) {
                 System.out.println(getDetails(allMagazine.next()));
             }
             System.out.println(clock());
         } else {
-            errorPrint(errorMessage.emptyList);
+            printError(ErrorMessage.emptyList);
         }
     }
 
@@ -175,82 +178,117 @@ public class ApplicationUI {
      * inputs are valid.
      */
     private void addNewProduct() {
-        System.out.println("Set title of magazine: ");
+        System.out.println("\nSet title of magazine: \n");
         String title = getStringInput();
-        System.out.println("Set publisher of magazine: ");
+        System.out.println("\nSet publisher of magazine: \n");
         String publisher = getStringInput();
-        System.out.println("Set category of magazine: ");
+        System.out.println("\nSet category of magazine: \n");
         String category = getStringInput();
-        System.out.println("Set release per year of magazine: ");
+        System.out.println("\nSet release per year of magazine: \n");
         int releasePerYear = getIntInput();
         if (magazine.addMagazine(title, publisher, category, releasePerYear)) {
             System.out.println(clock() + " Added " + title);
         } else {
-            errorPrint(errorMessage.magazineNotAdded);
+            printError(ErrorMessage.magazineNotAdded);
         }
     }
 
     /**
-     * find the magazine or magazines that contains the title typed by user
+     * Find the magazine or magazines that contains the title typed by user
      */
     private void searchProductByTitle() {
-        System.out.println("type title of magazine: ");
+        System.out.println("\ntype title of magazine: \n");
         String title = getStringInput();
         if (title == null) {
-            errorPrint(errorMessage.noTitle);
+            printError(ErrorMessage.noTitle);
         } else {
-            Iterator<Magazine> allMagazineByTitle = magazine.getMagazineByTitle(title);
+            Iterator<Magazine> allMagazineByTitle
+                    = magazine.getMagazinesByTitle(title);
             if (allMagazineByTitle.hasNext()) {
                 while (allMagazineByTitle.hasNext()) {
                     System.out.println(getDetails(allMagazineByTitle.next()));
                 }
                 System.out.println(clock());
             } else {
-                errorPrint(errorMessage.noMagazine);
+                printError(ErrorMessage.noMagazine);
             }
         }
     }
 
     /**
-     * find the magazine or magazines that contains the publisher typed by user
+     * Find the magazine or magazines that contains the publisher typed by user
      */
     private void searchProductByPublisher() {
-        System.out.println("type publisher of magazine: ");
+        System.out.println("\ntype publisher of magazine: \n");
         String publisher = getStringInput();
         if (publisher == null) {
-            errorPrint(errorMessage.noPublisher);
+            printError(ErrorMessage.noPublisher);
         } else {
-            Iterator<Magazine> allMagazine = magazine.getMagazineByPublisher(publisher);
+            Iterator<Magazine> allMagazine
+                    = magazine.getMagazinesByPublisher(publisher);
             if (allMagazine.hasNext()) {
                 while (allMagazine.hasNext()) {
                     System.out.println(getDetails(allMagazine.next()));
                 }
                 System.out.println(clock());
             } else {
-                errorPrint(errorMessage.noMagazine);
+                printError(ErrorMessage.noMagazine);
             }
         }
     }
 
     /**
-     * removes the magazine that has the equals title to the input typed by user
+     * List a list of magazines that you can remove found from the input, typed
+     * by user. Removes the magazine at the index user choose.
      */
     private void removeProductByTitle() {
-        System.out.println("type title of magazine to be removed: ");
+        System.out.println("\ntype title of magazine to be removed: \n");
+
         String title = getStringInput();
+        removeMagazinesList = new ArrayList<>();
+        int number = 1;
         if (title == null) {
-            errorPrint(errorMessage.noTitle);
+            printError(ErrorMessage.noTitle);
         } else {
-            if (magazine.removeMagazineByTitle(title)) {
-                System.out.println("\n" + clock() + title + " is removed");
+            Iterator<Magazine> magazinesToRemove
+                    = magazine.getMagazinesToRemove(title);
+            if (magazinesToRemove.hasNext()) {
+                magazinesToRemove.forEachRemaining(removeMagazinesList::add);
+                for (Magazine magazine : removeMagazinesList) {
+
+                    System.out.println(number + " | " + getDetails(magazine));
+                    number++;
+                }
+                System.out.println(clock());
+                number--;
+                if (removeMagazinesList.size() == 1) {
+                    System.out.println("Do you want to delete the magazine? "
+                            + "\nIf yes, type Yes, else type anything and enter\n");
+                    String yes = getStringInput();
+                    if (yes.toUpperCase() == "YES") {
+                        magazine.removeMagazine(removeMagazinesList.get(number));
+                        System.out.println("title: "
+                                + removeMagazinesList.get(number).getTitle()
+                                + " is removed");
+                    }
+                } else {
+                    System.out.println("Please choose number between (1-" + number
+                            + " to remove): \n");
+                    number = getIntInput() - 1;
+                    magazine.removeMagazine(removeMagazinesList.get(number));
+                    System.out.println("title: "
+                            + removeMagazinesList.get(number).getTitle()
+                            + " is removed");
+                }
             } else {
-                errorPrint(errorMessage.notRemovedTitle);
+                printError(ErrorMessage.noMagazine);
             }
+
         }
     }
 
     /**
-     * method to stop the application until enter is pressed. this is for not
+     * Method to stop the application until enter is pressed. this is for not
      * displaying the menu list, before the user have read the error message or
      * other messages.
      */
@@ -265,14 +303,14 @@ public class ApplicationUI {
     }
 
     /**
-     * builds a string which contains all info about the magazine we set
+     * Builds a string which contains all info about the magazine we set
      *
      * @param publication magazine that we want to get information about
      * @return details Returns all details about the magazine that is set.
      */
     private StringBuilder getDetails(Magazine publication) {
         StringBuilder details = new StringBuilder();
-        details.append("\nTitle: ");
+        details.append("Title: ");
         details.append(publication.getTitle());
         details.append("  |  Publisher: ");
         details.append(publication.getPublisher());
@@ -287,7 +325,7 @@ public class ApplicationUI {
     /**
      * Reads real time clock, returns is a string in minutes and hours.
      *
-     * @return clock return real time clock as a string
+     * @return the real time clock as a string
      */
     private StringBuilder clock() {
         StringBuilder clock = new StringBuilder();
@@ -301,7 +339,12 @@ public class ApplicationUI {
         return clock;
     }
 
-    private void errorPrint(errorMessage error) {
+    /**
+     * Prints out an error message set by the parameter error.
+     *
+     * @param error contains an enum used to print out the correct error message
+     */
+    private void printError(ErrorMessage error) {
         StringBuilder errorString = new StringBuilder();
         errorString.append("\nERROR: ");
         switch (error) {

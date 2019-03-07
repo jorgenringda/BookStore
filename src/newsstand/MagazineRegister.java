@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BookStore;
+package newsstand;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,13 +12,10 @@ import java.util.Iterator;
  * MagazineRegister for storing magazines
  * <ul>
  * <li> Add Magazine </li>
- * <li> Sell magazine by title </li>
  * <li> List all magazine </li>
- * <li> Get Magazine by index </li>
  * <li> Get magazine by title </li>
  * <li> Get magazine by publisher </li>
  * <li> Removes magazine by title </li>
- * <li> Removes magazine by publisher </li>
  * </ul>
  *
  * @author Ultrareidar
@@ -39,8 +36,7 @@ public class MagazineRegister {
      * @param publisher contains the set publisher as a string
      * @param category contains the set category as a string
      * @param releasePerYear contains the set releaser per year as an integer
-     * @return magazineAdded returns at Boolean true or false if magazine is
-     * added or not
+     * @return a Boolean true or false if magazine is added or not
      */
     public boolean addMagazine(String title, String publisher,
             String category, int releasePerYear) {
@@ -56,23 +52,23 @@ public class MagazineRegister {
     }
 
     /**
-     * List all magazines and print it out.
+     * Returns an iterator of an ArrayList of magazines
      *
-     * @return magazine.iterator Returns iterator of ArrayList of magazines
+     * @return iterator of ArrayList of magazines
      */
-    public Iterator<Magazine> listAllMagazine() {
+    public Iterator<Magazine> getMagazinesIterator() {
         return magazine.iterator();
     }
 
     /**
      * Search for object of type magazine that contains the given title, returns
-     * a ArrayList of all the magazine that contains the title.
+     * a ArrayList of all the magazines that contains the title.
      *
      * @param title contains the set title as a string.
-     * @return magazineContains an ArrayList that contains all the object of
-     * type magazine that contains the title.
+     * @return an ArrayList that contains all the object of type magazine that
+     * contains the title.
      */
-    public Iterator<Magazine> getMagazineByTitle(String title) {
+    public Iterator<Magazine> getMagazinesByTitle(String title) {
         ArrayList<Magazine> magazineContains = new ArrayList<>();
         if (!title.isEmpty()) {
             for (Magazine paper : magazine) {
@@ -87,13 +83,13 @@ public class MagazineRegister {
 
     /**
      * Search for object of type magazine that contains the given publisher,
-     * returns a ArrayList of all the magazine that contains the publisher.
+     * returns a ArrayList of all the magazines that contains the publisher.
      *
      * @param publisher contains the set publisher as a string.
-     * @return magazineContains an ArrayList that contains all the object of
-     * type magazine that contains the publisher.
+     * @return an ArrayList that contains all the object of type magazine that
+     * contains the publisher.
      */
-    public Iterator<Magazine> getMagazineByPublisher(String publisher) {
+    public Iterator<Magazine> getMagazinesByPublisher(String publisher) {
         ArrayList<Magazine> magazineContains = new ArrayList<>();
         if (!publisher.isEmpty()) {
             for (Magazine paper : magazine) {
@@ -107,25 +103,31 @@ public class MagazineRegister {
     }
 
     /**
-     * Remove magazine by title.When removing it print out "magazine(title) is
-     * removed". Else print "magazine is not removed"
+     * Returns a Iterator of an ArrayList containing magazines.
      *
      * @param title contains the set title as a string.
-     * @return found Returns boolean true or false if magazine is found or not
+     * @return a Iterator of an ArrayList
      */
-    public boolean removeMagazineByTitle(String title) {
-        boolean found = false;
+    public Iterator<Magazine> getMagazinesToRemove(String title) {
+        ArrayList<Magazine> magazinesToRemove = new ArrayList<>();
         if (!title.isEmpty()) {
-            Iterator<Magazine> it = this.magazine.iterator();
-            while (it.hasNext() && !found) {
-                Magazine paper = it.next();
+            for (Magazine paper : magazine) {
                 if (paper.getTitle().toUpperCase()
-                        .equals(title.toUpperCase())) {
-                    found = true;
-                    magazine.remove(paper);
+                        .contains(title.toUpperCase())) {
+                    magazinesToRemove.add(paper);
                 }
             }
         }
-        return found;
+        return magazinesToRemove.iterator();
+    }
+
+    /**
+     * Remove magazine by title.When removing it print out "magazine(title) is
+     * removed".Else print "magazine is not removed"
+     *
+     * @param magazineToRemove the magazine object user want to remove.
+     */
+    public void removeMagazine(Magazine magazineToRemove) {
+        magazine.remove(magazineToRemove);
     }
 }

@@ -1,10 +1,11 @@
 /*
- * Represent a newspaper by title, publisher, release per year and genre / category
+ * Represent a newspaper by title, publisher, release per year and
+ * genre / category.
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BookStore;
+package newsstand;
 
 /**
  * Holds information about a magazine, It contains of a title, publisher and
@@ -56,7 +57,7 @@ public class Magazine {
     /**
      * Returns the title of the magazine
      *
-     * @return returns the magazine title name
+     * @return the magazine title name
      */
     public String getTitle() {
         return this.title;
@@ -65,7 +66,7 @@ public class Magazine {
     /**
      * Returns the publisher of the magazine
      *
-     * @return returns the magazine publisher
+     * @return the magazine publisher
      */
     public String getPublisher() {
         return this.publisher;
@@ -74,7 +75,7 @@ public class Magazine {
     /**
      * Returns the category of the magazine
      *
-     * @return returns the type of category the magazine is
+     * @return the type of category the magazine is
      */
     public String getCategory() {
         return this.category;
@@ -83,14 +84,14 @@ public class Magazine {
     /**
      * Returns the number of publications per year
      *
-     * @return Returns number of publications per year
+     * @return number of publications per year
      */
     public int getReleasePerYear() {
         return this.releasePerYear;
     }
 
     /**
-     * sets the value of this.title from parameter title. also check if the
+     * Sets the value of this.title from parameter title. also check if the
      * value from parameter is valid
      *
      * @param title parameter contains an string with the title
@@ -108,7 +109,7 @@ public class Magazine {
     }
 
     /**
-     * sets the value of this.publisher from parameter publisher. also check if
+     * Sets the value of this.publisher from parameter publisher. also check if
      * the value from parameter is valid
      *
      * @param publisher parameter contains an string with the publisher
@@ -126,7 +127,7 @@ public class Magazine {
     }
 
     /**
-     * sets the value of this.category from parameter category. also check if
+     * Sets the value of this.category from parameter category. also check if
      * the value from parameter is valid
      *
      * @param category parameter contains an string with the category
@@ -144,7 +145,7 @@ public class Magazine {
     }
 
     /**
-     * sets the value of this.releasePerYear from parameter releasePerYear. also
+     * Sets the value of this.releasePerYear from parameter releasePerYear. also
      * check if the value from parameter is valid
      *
      * @param releasePerYear parameter contains an int with number of release
@@ -159,10 +160,10 @@ public class Magazine {
     }
 
     /**
-     * returns a Boolean saying true or false if the magazine is valid or
+     * Returns a Boolean saying true or false if the magazine is valid or
      * invalid
      *
-     * @return valid Boolean saying true or false if the magazine is valid or
+     * @return a Boolean saying true or false if the magazine is valid or
      * invalid
      */
     public boolean isMagazineValid() {
