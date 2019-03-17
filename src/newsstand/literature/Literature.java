@@ -1,23 +1,17 @@
 /*
- * Represent a newspaper by title, publisher, release per year and
- * genre / category.
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package newsstand;
+package newsstand.literature;
 
 /**
- * Holds information about a magazine, It contains of a title, publisher and
- * publications per year
  *
- * @author Ultrareidar
+ * @author Ishmael
  */
-public class Magazine {
+public abstract class Literature {
 
-    private boolean valid = true;
-
-    StringBuilder error = new StringBuilder();
+    protected boolean valid = true;
     /**
      * The magazine title
      */
@@ -33,61 +27,22 @@ public class Magazine {
      */
     private String category;
 
-    /**
-     * Number of publications per year of this magazine
-     */
-    private int releasePerYear;
+    private int price;
+
+    private int quantity = 0;
 
     /**
-     * Assign the passed variables to local categories
+     * Constructor for objects of class Magazine.
      *
-     * @param title The title of the magazine
      * @param publisher The publisher of the magazine
      * @param category The category of the magazine
-     * @param releasePerYear the number of release per year of the magazine
      */
-    public Magazine(String title, String publisher,
-            String category, int releasePerYear) {
+    public Literature(String title, String publisher,
+            String category, int price) {
         setTitle(title);
         setPublisher(publisher);
         setCategory(category);
-        setReleasePerYear(releasePerYear);
-    }
-
-    /**
-     * Returns the title of the magazine
-     *
-     * @return the magazine title name
-     */
-    public String getTitle() {
-        return this.title;
-    }
-
-    /**
-     * Returns the publisher of the magazine
-     *
-     * @return the magazine publisher
-     */
-    public String getPublisher() {
-        return this.publisher;
-    }
-
-    /**
-     * Returns the category of the magazine
-     *
-     * @return the type of category the magazine is
-     */
-    public String getCategory() {
-        return this.category;
-    }
-
-    /**
-     * Returns the number of publications per year
-     *
-     * @return number of publications per year
-     */
-    public int getReleasePerYear() {
-        return this.releasePerYear;
+        setPrice(price);
     }
 
     /**
@@ -144,29 +99,54 @@ public class Magazine {
         }
     }
 
-    /**
-     * Sets the value of this.releasePerYear from parameter releasePerYear. also
-     * check if the value from parameter is valid
-     *
-     * @param releasePerYear parameter contains an int with number of release
-     * per year
-     */
-    private void setReleasePerYear(int releasePerYear) {
-        if (releasePerYear <= 0) {
+    private void setPrice(int price) {
+        if (price <= 0) {
             valid = false;
         } else {
-            this.releasePerYear = releasePerYear;
+            this.price = price;
         }
     }
 
+    public void increaseQuantity() {
+        quantity++;
+    }
+
+    public void decreaseQuantity() {
+        quantity--;
+    }
+
     /**
-     * Returns a Boolean saying true or false if the magazine is valid or
-     * invalid
+     * Returns the title of the magazine
      *
-     * @return a Boolean saying true or false if the magazine is valid or
-     * invalid
+     * @return the magazine title name
      */
-    public boolean isMagazineValid() {
-        return valid;
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Returns the publisher of the magazine
+     *
+     * @return the magazine publisher
+     */
+    public String getPublisher() {
+        return this.publisher;
+    }
+
+    /**
+     * Returns the category of the magazine
+     *
+     * @return the type of category the magazine is
+     */
+    public String getCategory() {
+        return this.category;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public int getQuantity() {
+        return this.quantity;
     }
 }

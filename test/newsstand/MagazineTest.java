@@ -5,6 +5,7 @@
  */
 package newsstand;
 
+import newsstand.literature.Magazine;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

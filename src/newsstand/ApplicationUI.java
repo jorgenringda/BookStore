@@ -1,11 +1,18 @@
 package newsstand;
 
+import newsstand.literature.Literature;
+import newsstand.view.NewspaperView;
+import newsstand.view.BookView;
+import newsstand.literature.Newspaper;
+import newsstand.literature.Magazine;
+import newsstand.literature.Book;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
+import newsstand.view.MagazineView;
 
 /**
  * Makes up the user interface (text based) of the application. Responsible for
@@ -17,8 +24,12 @@ import java.util.Scanner;
  */
 public class ApplicationUI {
 
-    MagazineRegister magazine;
-    ArrayList<Magazine> removeMagazinesList;
+    NewspaperView newspaper;
+    BookView book;
+    MagazineView magazine;
+    Register literature;
+    ArrayList<Literature> removeMagazinesList;
+    boolean back;
 
     /**
      * defining variables to use in switch-case for print out error message.
@@ -32,19 +43,36 @@ public class ApplicationUI {
      * The menu that will be displayed.
      */
     private final String[] menuItems;
+    private final String[] typeLiterature;
 
     /**
      * Creates an instance of the ApplicationUI User interface.
      */
     public ApplicationUI() {
+        newspaper = new NewspaperView();
+        book = new BookView();
+        magazine = new MagazineView();
 
-        this.magazine = new MagazineRegister();
+        this.literature = new Register();
+
         this.menuItems = new String[]{
-            "1. Add new magazine",
-            "2. List all magazine",
+            "1. Add new literature",
+            "2. List all literature",
             "3. Search magazine by title",
             "4. Search a magazine by publisher",
-            "5. Remove a magazine by title"};
+            "5. Remove a magazine by title",
+            "6. Enter Shop"};
+
+        this.typeLiterature = new String[]{
+            "1. Magazine",
+            "2. Book",
+            "3. Newspaper",
+            "4. Return"};
+
+        /**
+         * this.shopMenu = new String[]{ "1. Magazine", "2. Book", "3.
+         * Newspaper", "4. Return"};
+         */
     }
 
     /**
@@ -78,6 +106,10 @@ public class ApplicationUI {
                         break;
 
                     case 6:
+                        this.enterShop();
+                        break;
+
+                    case 7:
                         System.out.println("\nThank you for using "
                                 + "Application v2.1 Bye!\n");
                         quit = true;
@@ -85,7 +117,7 @@ public class ApplicationUI {
 
                     default:
                 }
-                if (!quit) {
+                if (!quit && !back) {
                     typeEnterToContinue();
                 }
             } catch (InputMismatchException ime) {
@@ -161,15 +193,36 @@ public class ApplicationUI {
      * Lists all the products/literature in the register
      */
     private void listAllProducts() {
-        Iterator<Magazine> allMagazine = magazine.getMagazinesIterator();
+        int number = 1;
+        Iterator<Literature> allMagazine = literature.getAllLiteratureIterator();
         if (allMagazine.hasNext()) {
             while (allMagazine.hasNext()) {
-                System.out.println(getDetails(allMagazine.next()));
+                System.out.println("\n" + number + "  |  " + getDetails(allMagazine.next()));
+                number++;
             }
             System.out.println(clock());
         } else {
             printError(ErrorMessage.emptyList);
         }
+
+    }
+
+    private int setTypeLiterature() {
+        System.out.println("\n**** Application v2.1 ****\n");
+        // Display the menu
+        for (String Literature : typeLiterature) {
+            System.out.println(Literature);
+        }
+        int maxMenuItemNumber = typeLiterature.length;
+        // Add the "Exit"-choice to the menu
+        System.out.println("Please choose number between (1-"
+                + maxMenuItemNumber + "): \n");
+        // Read input from user
+        int literatureSelection = getIntInput();
+        if ((literatureSelection < 1) || (literatureSelection > maxMenuItemNumber)) {
+            throw new InputMismatchException();
+        }
+        return literatureSelection;
     }
 
     /**
@@ -178,18 +231,40 @@ public class ApplicationUI {
      * inputs are valid.
      */
     private void addNewProduct() {
-        System.out.println("\nSet title of magazine: \n");
-        String title = getStringInput();
-        System.out.println("\nSet publisher of magazine: \n");
-        String publisher = getStringInput();
-        System.out.println("\nSet category of magazine: \n");
-        String category = getStringInput();
-        System.out.println("\nSet release per year of magazine: \n");
-        int releasePerYear = getIntInput();
-        if (magazine.addMagazine(title, publisher, category, releasePerYear)) {
-            System.out.println(clock() + " Added " + title);
-        } else {
-            printError(ErrorMessage.magazineNotAdded);
+
+        back = false;
+        while (!back) {
+            try {
+                int literatureSelection = this.setTypeLiterature();
+                switch (literatureSelection) {
+                    case 1:
+                        Magazine magazineToAdd = this.magazine.createMagazine();
+                        literature.addLiterature(magazineToAdd);
+                        break;
+
+                    case 2:
+                        Book bookToAdd = this.book.createBook();
+                        literature.addLiterature(bookToAdd);
+                        break;
+
+                    case 3:
+                        Newspaper newspaperToAdd = this.newspaper.createNewspaper();
+                        literature.addLiterature(newspaperToAdd);
+                        break;
+
+                    case 4:
+                        back = true;
+                        break;
+
+                    default:
+                }
+                if (!back) {
+                    typeEnterToContinue();
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("\nERROR: Please provide a number "
+                        + "between 1 and " + this.menuItems.length + "..\n");
+            }
         }
     }
 
@@ -197,16 +272,16 @@ public class ApplicationUI {
      * Find the magazine or magazines that contains the title typed by user
      */
     private void searchProductByTitle() {
-        System.out.println("\ntype title of magazine: \n");
+        System.out.println("\ntype title of literature: \n");
         String title = getStringInput();
         if (title == null) {
             printError(ErrorMessage.noTitle);
         } else {
-            Iterator<Magazine> allMagazineByTitle
-                    = magazine.getMagazinesByTitle(title);
-            if (allMagazineByTitle.hasNext()) {
-                while (allMagazineByTitle.hasNext()) {
-                    System.out.println(getDetails(allMagazineByTitle.next()));
+            Iterator<Literature> allLiteratureByTitle
+                    = literature.getLiteratureByTitle(title);
+            if (allLiteratureByTitle.hasNext()) {
+                while (allLiteratureByTitle.hasNext()) {
+                    System.out.println(getDetails(allLiteratureByTitle.next()));
                 }
                 System.out.println(clock());
             } else {
@@ -219,16 +294,16 @@ public class ApplicationUI {
      * Find the magazine or magazines that contains the publisher typed by user
      */
     private void searchProductByPublisher() {
-        System.out.println("\ntype publisher of magazine: \n");
+        System.out.println("\ntype publisher of literature: \n");
         String publisher = getStringInput();
         if (publisher == null) {
             printError(ErrorMessage.noPublisher);
         } else {
-            Iterator<Magazine> allMagazine
-                    = magazine.getMagazinesByPublisher(publisher);
-            if (allMagazine.hasNext()) {
-                while (allMagazine.hasNext()) {
-                    System.out.println(getDetails(allMagazine.next()));
+            Iterator<Literature> allLiteratureByMagazine
+                    = literature.getLiteraturesByPublisher(publisher);
+            if (allLiteratureByMagazine.hasNext()) {
+                while (allLiteratureByMagazine.hasNext()) {
+                    System.out.println(getDetails(allLiteratureByMagazine.next()));
                 }
                 System.out.println(clock());
             } else {
@@ -250,32 +325,36 @@ public class ApplicationUI {
         if (title == null) {
             printError(ErrorMessage.noTitle);
         } else {
-            Iterator<Magazine> magazinesToRemove
-                    = magazine.getMagazinesToRemove(title);
+            Iterator<Literature> magazinesToRemove
+                    = literature.getLiteratureToRemoveByTitle(title);
             if (magazinesToRemove.hasNext()) {
                 magazinesToRemove.forEachRemaining(removeMagazinesList::add);
-                for (Magazine magazine : removeMagazinesList) {
+                for (Literature test : removeMagazinesList) {
 
-                    System.out.println(number + " | " + getDetails(magazine));
+                    System.out.println(number + " | " + getDetails(test));
                     number++;
                 }
                 System.out.println(clock());
                 number--;
                 if (removeMagazinesList.size() == 1) {
-                    System.out.println("Do you want to delete the magazine? "
+                    System.out.println("Do you want to delete this literature? "
                             + "\nIf yes, type Yes, else type anything and enter\n");
                     String yes = getStringInput();
-                    if (yes.toUpperCase() == "YES") {
-                        magazine.removeMagazine(removeMagazinesList.get(number));
+                    if (yes.trim().toUpperCase().equals("YES")) {
                         System.out.println("title: "
-                                + removeMagazinesList.get(number).getTitle()
-                                + " is removed");
+                                + removeMagazinesList.get(0).getTitle());
+                        if (removeMagazinesList.get(0).getQuantity() <= 1) {
+                            System.out.print("  | Literature stock is decreased by 1");
+                        } else {
+                            System.out.print(" is removed");
+                        }
+                        literature.removeLiterature(removeMagazinesList.get(0));
                     }
                 } else {
                     System.out.println("Please choose number between (1-" + number
                             + " to remove): \n");
                     number = getIntInput() - 1;
-                    magazine.removeMagazine(removeMagazinesList.get(number));
+                    literature.removeLiterature(removeMagazinesList.get(number));
                     System.out.println("title: "
                             + removeMagazinesList.get(number).getTitle()
                             + " is removed");
@@ -284,6 +363,49 @@ public class ApplicationUI {
                 printError(ErrorMessage.noMagazine);
             }
 
+        }
+    }
+
+    /**
+     * Add a new product/literature to the register. First reading the input
+     * value and stores it. When all variable is set its add the magazine if the
+     * inputs are valid.
+     */
+    private void enterShop() {
+
+        back = false;
+        while (!back) {
+            try {
+                int literatureSelection = this.setTypeLiterature();
+                switch (literatureSelection) {
+                    case 1:
+                        Magazine magazineToAdd = this.magazine.createMagazine();
+                        literature.addLiterature(magazineToAdd);
+                        break;
+
+                    case 2:
+                        Book bookToAdd = this.book.createBook();
+                        literature.addLiterature(bookToAdd);
+                        break;
+
+                    case 3:
+                        Newspaper newspaperToAdd = this.newspaper.createNewspaper();
+                        literature.addLiterature(newspaperToAdd);
+                        break;
+
+                    case 4:
+                        back = true;
+                        break;
+
+                    default:
+                }
+                if (!back) {
+                    typeEnterToContinue();
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("\nERROR: Please provide a number "
+                        + "between 1 and " + this.menuItems.length + "..\n");
+            }
         }
     }
 
@@ -308,16 +430,17 @@ public class ApplicationUI {
      * @param publication magazine that we want to get information about
      * @return details Returns all details about the magazine that is set.
      */
-    private StringBuilder getDetails(Magazine publication) {
+    private StringBuilder getDetails(Literature publication) {
         StringBuilder details = new StringBuilder();
-        details.append("Title: ");
-        details.append(publication.getTitle());
-        details.append("  |  Publisher: ");
-        details.append(publication.getPublisher());
-        details.append("  |  Category: ");
-        details.append(publication.getCategory());
-        details.append("  |  Release Per Year: ");
-        details.append(publication.getReleasePerYear());
+        if (publication instanceof Book) {
+            details.append(book.getDetailsOfBook((Book) publication));
+        }
+        if (publication instanceof Magazine) {
+            details.append(magazine.getDetailsOfMagazine((Magazine) publication));
+        }
+        if (publication instanceof Newspaper) {
+            details.append(newspaper.getDetailsOfNewspaper((Newspaper) publication));
+        }
         details.append("\n");
         return details;
     }
