@@ -34,8 +34,8 @@ public class Book extends Literature {
      * @param edition the number of release per year of the magazine
      */
     public Book(String title, String publisher,
-            String author, String category, int edition, int price) {
-        super(title, publisher, category, price);
+            String author, String category, int edition, int price, int quantity) {
+        super(title, publisher, category, price, quantity);
         setAuthor(author);
         setEdition(edition);
 
@@ -89,16 +89,5 @@ public class Book extends Literature {
         } else {
             this.edition = edition;
         }
-    }
-
-    /**
-     * Returns a Boolean saying true or false if the magazine is valid or
-     * invalid
-     *
-     * @return a Boolean saying true or false if the magazine is valid or
-     * invalid
-     */
-    public boolean isBookValid() {
-        return valid;
     }
 }

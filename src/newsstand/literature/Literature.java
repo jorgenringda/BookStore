@@ -29,7 +29,7 @@ public abstract class Literature {
 
     private int price;
 
-    private int quantity = 0;
+    private int quantity;
 
     /**
      * Constructor for objects of class Magazine.
@@ -38,11 +38,12 @@ public abstract class Literature {
      * @param category The category of the magazine
      */
     public Literature(String title, String publisher,
-            String category, int price) {
+            String category, int price, int quantity) {
         setTitle(title);
         setPublisher(publisher);
         setCategory(category);
         setPrice(price);
+        setQuantity(quantity);
     }
 
     /**
@@ -100,19 +101,31 @@ public abstract class Literature {
     }
 
     private void setPrice(int price) {
-        if (price <= 0) {
+        if (price < 0) {
             valid = false;
         } else {
             this.price = price;
         }
     }
 
-    public void increaseQuantity() {
+    private void setQuantity(int quantity) {
+        if (quantity < 0) {
+            valid = false;
+        } else {
+            this.quantity = quantity;
+        }
+    }
+
+    public void increaseStock() {
         quantity++;
     }
 
-    public void decreaseQuantity() {
+    public void decreaseStock() {
         quantity--;
+    }
+
+    public void addOrRemoveStock(int amount) {
+        this.quantity += amount;
     }
 
     /**
@@ -148,5 +161,9 @@ public abstract class Literature {
 
     public int getQuantity() {
         return this.quantity;
+    }
+
+    public boolean isLiteratureValid() {
+        return valid;
     }
 }

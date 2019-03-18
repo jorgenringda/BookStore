@@ -5,13 +5,32 @@
  */
 package newsstand.shopping;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import newsstand.literature.Literature;
+
 /**
  *
  * @author Ishmael
  */
 public class Cart {
 
+    private ArrayList<Literature> shoppingCart;
+
     public Cart() {
+        this.shoppingCart = new ArrayList<>();
+    }
+
+    public void addLiteratureToCart(Literature literature) {
+        shoppingCart.add(literature);
+    }
+
+    public void removeLiteratureFromCart(Literature literature) {
+        shoppingCart.remove(literature);
+    }
+
+    public Iterator<Literature> getCartIterator() {
+        return this.shoppingCart.iterator();
 
     }
 }

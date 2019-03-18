@@ -31,8 +31,8 @@ public class Magazine extends Literature {
      * @param releasePerYear the number of release per year of the magazine
      */
     public Magazine(String title, String publisher,
-            String category, int releasePerYear, int price) {
-        super(title, publisher, category, price);
+            String category, int releasePerYear, int price, int amount) {
+        super(title, publisher, category, price, amount);
         setReleasePerYear(releasePerYear);
     }
 
@@ -60,14 +60,4 @@ public class Magazine extends Literature {
         }
     }
 
-    /**
-     * Returns a Boolean saying true or false if the magazine is valid or
-     * invalid
-     *
-     * @return a Boolean saying true or false if the magazine is valid or
-     * invalid
-     */
-    public boolean isMagazineValid() {
-        return valid;
-    }
 }

@@ -31,8 +31,8 @@ public class Newspaper extends Literature {
      * @param category The category of the magazine
      */
     public Newspaper(String title, String publisher,
-            String category, String dateOfRelease, int price) {
-        super(title, publisher, category, price);
+            String category, String dateOfRelease, int price, int quantity) {
+        super(title, publisher, category, price, quantity);
         setDateOfRelease(dateOfRelease);
     }
 
@@ -61,16 +61,5 @@ public class Newspaper extends Literature {
         } else {
             valid = false;
         }
-    }
-
-    /**
-     * Returns a Boolean saying true or false if the magazine is valid or
-     * invalid
-     *
-     * @return a Boolean saying true or false if the magazine is valid or
-     * invalid
-     */
-    public boolean isNewspaperValid() {
-        return valid;
     }
 }

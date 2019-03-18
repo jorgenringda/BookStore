@@ -1,17 +1,17 @@
 package newsstand;
 
+import java.io.IOException;
+import java.time.LocalTime;
 import newsstand.literature.Literature;
 import newsstand.view.NewspaperView;
 import newsstand.view.BookView;
 import newsstand.literature.Newspaper;
-import newsstand.literature.Magazine;
-import newsstand.literature.Book;
-import java.io.IOException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
-import java.util.Scanner;
+import newsstand.literature.Book;
+import newsstand.literature.Magazine;
+import newsstand.shopping.Cart;
 import newsstand.view.MagazineView;
 
 /**
@@ -24,6 +24,8 @@ import newsstand.view.MagazineView;
  */
 public class ApplicationUI {
 
+    Cart shoppingCart;
+    GetInputs validInput;
     NewspaperView newspaper;
     BookView book;
     MagazineView magazine;
@@ -44,11 +46,14 @@ public class ApplicationUI {
      */
     private final String[] menuItems;
     private final String[] typeLiterature;
+    private final String[] shopMenu;
 
     /**
      * Creates an instance of the ApplicationUI User interface.
      */
     public ApplicationUI() {
+        shoppingCart = new Cart();
+        validInput = new GetInputs();
         newspaper = new NewspaperView();
         book = new BookView();
         magazine = new MagazineView();
@@ -56,23 +61,29 @@ public class ApplicationUI {
         this.literature = new Register();
 
         this.menuItems = new String[]{
-            "1. Add new literature",
-            "2. List all literature",
-            "3. Search magazine by title",
-            "4. Search a magazine by publisher",
-            "5. Remove a magazine by title",
-            "6. Enter Shop"};
+            "Add new literature",
+            "Add more quantity to a literature in stock",
+            "Remove quantity from a literature in stock",
+            "List all literature",
+            "Search magazine by title",
+            "Search a magazine by publisher",
+            "Remove a magazine by title",
+            "Enter Shop"};
 
         this.typeLiterature = new String[]{
-            "1. Magazine",
-            "2. Book",
-            "3. Newspaper",
-            "4. Return"};
+            "Magazine",
+            "Book",
+            "Newspaper",
+            "Return"};
 
-        /**
-         * this.shopMenu = new String[]{ "1. Magazine", "2. Book", "3.
-         * Newspaper", "4. Return"};
-         */
+        this.shopMenu = new String[]{
+            "Show all products in store",
+            "Search after product by title",
+            "Show shopping cart",
+            "Remove product from cart",
+            "Checkout",
+            "Return"};
+
     }
 
     /**
@@ -90,26 +101,34 @@ public class ApplicationUI {
                         break;
 
                     case 2:
-                        this.listAllProducts();
+                        this.addQuantity();
                         break;
 
                     case 3:
-                        this.searchProductByTitle();
+                        this.removeQuantity();
                         break;
 
                     case 4:
-                        this.searchProductByPublisher();
+                        this.listAllProductsByIterator(literature.getAllLiteratureIterator());
                         break;
 
                     case 5:
-                        this.removeProductByTitle();
+                        this.searchProductByTitle();
                         break;
 
                     case 6:
-                        this.enterShop();
+                        this.searchProductByPublisher();
                         break;
 
                     case 7:
+                        this.removeProductByTitle();
+                        break;
+
+                    case 8:
+                        this.enterShop();
+                        break;
+
+                    case 9:
                         System.out.println("\nThank you for using "
                                 + "Application v2.1 Bye!\n");
                         quit = true;
@@ -142,9 +161,12 @@ public class ApplicationUI {
     private int showMenu() throws InputMismatchException {
 
         System.out.println("\n**** Application v2.1 ****\n");
+        int menuNumber = 1;
         // Display the menu
         for (String menuItem : menuItems) {
-            System.out.println(menuItem);
+
+            System.out.println(menuNumber + ". " + menuItem);
+            menuNumber++;
         }
         int maxMenuItemNumber = menuItems.length + 1;
         // Add the "Exit"-choice to the menu
@@ -152,73 +174,27 @@ public class ApplicationUI {
         System.out.println("Please choose menu item (1-"
                 + maxMenuItemNumber + "): \n");
         // Read input from user
-        int menuSelection = getIntInput();
+        int menuSelection = validInput.getIntInput();
         if ((menuSelection < 1) || (menuSelection > maxMenuItemNumber)) {
             throw new InputMismatchException();
         }
         return menuSelection;
     }
 
-    /**
-     * Method that returns input from user as a string
-     *
-     * @return input returns input typed by user as a string
-     */
-    private String getStringInput() {
-        Scanner reader = new Scanner(System.in);
-        String input = reader.next();
-        System.out.println();
-
-        return input;
-    }
-
-    /**
-     * Method that returns input from user as a integer
-     *
-     * @return input returns input typed by user as a integer
-     */
-    private int getIntInput() {
-        Scanner reader = new Scanner(System.in);
-        int input;
-        try {
-            input = reader.nextInt();
-        } catch (InputMismatchException error) {
-            System.out.println("\nPlease enter a valid number\n");
-            input = getIntInput();
-        }
-        return input;
-    }
-
-    /**
-     * Lists all the products/literature in the register
-     */
-    private void listAllProducts() {
-        int number = 1;
-        Iterator<Literature> allMagazine = literature.getAllLiteratureIterator();
-        if (allMagazine.hasNext()) {
-            while (allMagazine.hasNext()) {
-                System.out.println("\n" + number + "  |  " + getDetails(allMagazine.next()));
-                number++;
-            }
-            System.out.println(clock());
-        } else {
-            printError(ErrorMessage.emptyList);
-        }
-
-    }
-
     private int setTypeLiterature() {
+        int menuNumber = 1;
         System.out.println("\n**** Application v2.1 ****\n");
         // Display the menu
         for (String Literature : typeLiterature) {
-            System.out.println(Literature);
+            System.out.println(menuNumber + ". " + Literature);
+            menuNumber++;
         }
         int maxMenuItemNumber = typeLiterature.length;
         // Add the "Exit"-choice to the menu
         System.out.println("Please choose number between (1-"
                 + maxMenuItemNumber + "): \n");
         // Read input from user
-        int literatureSelection = getIntInput();
+        int literatureSelection = validInput.getIntInput();
         if ((literatureSelection < 1) || (literatureSelection > maxMenuItemNumber)) {
             throw new InputMismatchException();
         }
@@ -231,7 +207,7 @@ public class ApplicationUI {
      * inputs are valid.
      */
     private void addNewProduct() {
-
+        boolean literatureAdded = false;
         back = false;
         while (!back) {
             try {
@@ -239,17 +215,17 @@ public class ApplicationUI {
                 switch (literatureSelection) {
                     case 1:
                         Magazine magazineToAdd = this.magazine.createMagazine();
-                        literature.addLiterature(magazineToAdd);
+                        literatureAdded = literature.addLiterature(magazineToAdd);
                         break;
 
                     case 2:
                         Book bookToAdd = this.book.createBook();
-                        literature.addLiterature(bookToAdd);
+                        literatureAdded = literature.addLiterature(bookToAdd);
                         break;
 
                     case 3:
                         Newspaper newspaperToAdd = this.newspaper.createNewspaper();
-                        literature.addLiterature(newspaperToAdd);
+                        literatureAdded = literature.addLiterature(newspaperToAdd);
                         break;
 
                     case 4:
@@ -265,15 +241,147 @@ public class ApplicationUI {
                 System.out.println("\nERROR: Please provide a number "
                         + "between 1 and " + this.menuItems.length + "..\n");
             }
+            if (literatureAdded) {
+                System.out.println("Literature is added");
+            } else {
+                printError(ErrorMessage.magazineNotAdded);
+            }
+        }
+    }
+
+    private int showShopMenu() {
+        int menuNumber = 1;
+        System.out.println("\n**** Application v2.1 ****\n");
+        // Display the show menu
+        for (String shop : shopMenu) {
+            System.out.println(menuNumber + ". " + shop);
+            menuNumber++;
+        }
+        int maxMenuItemNumber = shopMenu.length;
+        // Add the "Exit"-choice to the menu
+        System.out.println("Please choose number between (1-"
+                + maxMenuItemNumber + "): \n");
+        // Read input from user
+        int shopSelection = validInput.getIntInput();
+        if ((shopSelection < 1) || (shopSelection > maxMenuItemNumber)) {
+            throw new InputMismatchException();
+        }
+        return shopSelection;
+    }
+
+    /**
+     * Add a new product/literature to the register. First reading the input
+     * value and stores it. When all variable is set its add the magazine if the
+     * inputs are valid.
+     */
+    private void enterShop() {
+        System.out.println("Please provide the code to enter the shop: ");
+        if (validInput.getStringInput().trim().equals("9999")) {
+            System.out.println("Code was correct you will now enter the shop!");
+            back = false;
+            while (!back) {
+                try {
+                    int shop = this.showShopMenu();
+                    switch (shop) {
+                        case 1:
+                            listAllProductsByIterator(literature.getAllLiteratureIterator());
+                            break;
+
+                        case 2:
+                            searchProductByTitle();
+                            break;
+
+                        case 3:
+                            listAllProductsByIterator(shoppingCart.getCartIterator());
+                            break;
+
+                        case 4:
+                            back = true;
+                            break;
+
+                        default:
+                    }
+                    if (!back) {
+                        typeEnterToContinue();
+                    }
+                } catch (InputMismatchException ime) {
+                    System.out.println("\nERROR: Please provide a number "
+                            + "between 1 and " + this.menuItems.length + "..\n");
+                }
+            }
+        } else {
+            System.out.println("Code was not corret, you will now enter the start menu");
         }
     }
 
     /**
-     * Find the magazine or magazines that contains the title typed by user
+     * Lists all the products/literature in the register
+     */
+    private boolean listAllProductsByIterator(Iterator<Literature> allLiterature) {
+        boolean hasLiteratureInList = false;
+        int number = 1;
+        if (allLiterature.hasNext()) {
+            while (allLiterature.hasNext()) {
+                System.out.println("\n" + number + "  |  " + getDetails(allLiterature.next()));
+                number++;
+            }
+            System.out.println(clock());
+            hasLiteratureInList = true;
+        } else {
+            printError(ErrorMessage.emptyList);
+            hasLiteratureInList = false;
+        }
+        return hasLiteratureInList;
+    }
+
+    private void addQuantity() {
+        if (listAllProductsByIterator(literature.getAllLiteratureIterator())) {
+            System.out.println("Enter the number of the literature you want to add quantity to!");
+            int literatureToAddQuantity = validInput.getIntInput();
+            if (literature.getLiteratureByIndex(literatureToAddQuantity) != null) {
+                Literature literatureToAdd
+                        = this.literature.getLiteratureByIndex(literatureToAddQuantity);
+                System.out.println("Enter the amount you want to add: ");
+                int quantity = validInput.getIntInput();
+                System.out.println("You have now added " + quantity + " to " + literatureToAdd);
+                literatureToAdd.addOrRemoveStock(quantity);
+            } else {
+                System.out.println("Did not add any amount because the number of "
+                        + "the literature you want to add quantity to, "
+                        + "does not exsist");
+            }
+        } else {
+            System.out.println("\nNo literature in newsstand");
+        }
+    }
+
+    private void removeQuantity() {
+        if (listAllProductsByIterator(literature.getAllLiteratureIterator())) {
+            System.out.println("Enter the number of the literature you want to remove quantity from!");
+            int literatureToAddQuantity = validInput.getIntInput() - 1;
+            if (literature.getLiteratureByIndex(literatureToAddQuantity) != null) {
+                Literature literatureToAdd
+                        = this.literature.getLiteratureByIndex(literatureToAddQuantity);
+                System.out.println("Enter the amount you want to remove: ");
+                int quantity = validInput.getIntInput();
+                System.out.println("You have now removed " + quantity + " from " + literatureToAdd);
+                literatureToAdd.addOrRemoveStock(quantity);
+            } else {
+                System.out.println("Did not remove any amount because the number of "
+                        + "the literature you want to add quantity to, "
+                        + "does not exsist");
+            }
+        } else {
+            System.out.println("\nNo literature in newsstand");
+        }
+    }
+
+    /**
+     * Find the literature or literatures that contains the title typed by user
      */
     private void searchProductByTitle() {
         System.out.println("\ntype title of literature: \n");
-        String title = getStringInput();
+        String title = validInput.getStringInput();
         if (title == null) {
             printError(ErrorMessage.noTitle);
         } else {
@@ -291,11 +399,12 @@ public class ApplicationUI {
     }
 
     /**
-     * Find the magazine or magazines that contains the publisher typed by user
+     * Find the Literature or literatures that contains the publisher typed by
+     * user
      */
     private void searchProductByPublisher() {
         System.out.println("\ntype publisher of literature: \n");
-        String publisher = getStringInput();
+        String publisher = validInput.getStringInput();
         if (publisher == null) {
             printError(ErrorMessage.noPublisher);
         } else {
@@ -313,13 +422,13 @@ public class ApplicationUI {
     }
 
     /**
-     * List a list of magazines that you can remove found from the input, typed
-     * by user. Removes the magazine at the index user choose.
+     * List a list of Literature that you can remove found from the input, typed
+     * by user. Removes the literature at the index user choose.
      */
     private void removeProductByTitle() {
         System.out.println("\ntype title of magazine to be removed: \n");
 
-        String title = getStringInput();
+        String title = validInput.getStringInput();
         removeMagazinesList = new ArrayList<>();
         int number = 1;
         if (title == null) {
@@ -337,75 +446,42 @@ public class ApplicationUI {
                 System.out.println(clock());
                 number--;
                 if (removeMagazinesList.size() == 1) {
-                    System.out.println("Do you want to delete this literature? "
-                            + "\nIf yes, type Yes, else type anything and enter\n");
-                    String yes = getStringInput();
-                    if (yes.trim().toUpperCase().equals("YES")) {
-                        System.out.println("title: "
-                                + removeMagazinesList.get(0).getTitle());
-                        if (removeMagazinesList.get(0).getQuantity() <= 1) {
-                            System.out.print("  | Literature stock is decreased by 1");
-                        } else {
-                            System.out.print(" is removed");
+                    if (removeMagazinesList.get(0).getQuantity() == 1) {
+                        System.out.println("Do you want to delete this literature? "
+                                + "\nIf yes, type Yes, else type anything and enter\n");
+                        String yes = validInput.getStringInput();
+                        if (yes.trim().toUpperCase().equals("YES")) {
+                            System.out.println("title: "
+                                    + removeMagazinesList.get(0).getTitle()
+                                    + " is removed");
+
+                            literature.removeLiterature(removeMagazinesList.get(0));
                         }
-                        literature.removeLiterature(removeMagazinesList.get(0));
+                    } else {
+                        System.out.println("Do you want to delete this literature? "
+                                + "\nIf yes, type Yes, else type anything and enter\n");
+                        String yes = validInput.getStringInput();
+                        if (yes.trim().toUpperCase().equals("YES")) {
+                            System.out.println("title: "
+                                    + removeMagazinesList.get(0).getTitle()
+                                    + "  | Literature stock is decreased by 1");
+                            removeMagazinesList.get(0).decreaseStock();
+                        }
                     }
                 } else {
                     System.out.println("Please choose number between (1-" + number
                             + " to remove): \n");
-                    number = getIntInput() - 1;
+                    number = validInput.getIntInput() - 1;
                     literature.removeLiterature(removeMagazinesList.get(number));
                     System.out.println("title: "
                             + removeMagazinesList.get(number).getTitle()
-                            + " is removed");
+                            + "  | Literature stock is decreased by 1");
+                    removeMagazinesList.get(number).decreaseStock();
                 }
             } else {
                 printError(ErrorMessage.noMagazine);
             }
 
-        }
-    }
-
-    /**
-     * Add a new product/literature to the register. First reading the input
-     * value and stores it. When all variable is set its add the magazine if the
-     * inputs are valid.
-     */
-    private void enterShop() {
-
-        back = false;
-        while (!back) {
-            try {
-                int literatureSelection = this.setTypeLiterature();
-                switch (literatureSelection) {
-                    case 1:
-                        Magazine magazineToAdd = this.magazine.createMagazine();
-                        literature.addLiterature(magazineToAdd);
-                        break;
-
-                    case 2:
-                        Book bookToAdd = this.book.createBook();
-                        literature.addLiterature(bookToAdd);
-                        break;
-
-                    case 3:
-                        Newspaper newspaperToAdd = this.newspaper.createNewspaper();
-                        literature.addLiterature(newspaperToAdd);
-                        break;
-
-                    case 4:
-                        back = true;
-                        break;
-
-                    default:
-                }
-                if (!back) {
-                    typeEnterToContinue();
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("\nERROR: Please provide a number "
-                        + "between 1 and " + this.menuItems.length + "..\n");
-            }
         }
     }
 

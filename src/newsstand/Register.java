@@ -45,10 +45,16 @@ public class Register {
     public boolean addLiterature(Literature literature) {
         boolean magazineAdded = false;
         try {
-            getDuplicateLiterature(literature).increaseQuantity();
+            getDuplicateLiterature(literature).increaseStock();
         } catch (NullPointerException e) {
-            magazineAdded = this.literature.add(literature);
-            literature.increaseQuantity();
+            try {
+                if (literature.isLiteratureValid()) {
+                    magazineAdded = this.literature.add(literature);
+                    magazineAdded = true;
+                }
+            } catch (NullPointerException error) {
+                magazineAdded = false;
+            }
         }
         return magazineAdded;
     }
@@ -60,6 +66,14 @@ public class Register {
      */
     public Iterator<Literature> getAllLiteratureIterator() {
         return literature.iterator();
+    }
+
+    public Literature getLiteratureByIndex(int index) {
+        Literature literature = null;
+        if (indexValid(index)) {
+            literature = this.literature.get(index);
+        }
+        return literature;
     }
 
     /**
@@ -151,7 +165,7 @@ public class Register {
             if (getDuplicateLiterature(literatureToRemove).getQuantity() <= 1) {
                 literature.remove(literatureToRemove);
             } else {
-                getDuplicateLiterature(literatureToRemove).decreaseQuantity();
+                getDuplicateLiterature(literatureToRemove).decreaseStock();
             }
         }
     }
@@ -178,5 +192,28 @@ public class Register {
             }
         }
         return duplicateFound;
+    }
+
+    /**
+     * checks if an index is vaild and in use. returns true if.
+     *
+     * @param index set number of the index that is going to be checked if vaild
+     * @return valid witch it either true or false.
+     */
+    private boolean indexValid(int index) {
+        boolean valid = false;
+        if (index < 0) {
+            valid = false;
+        } else {
+            if (index < 0) {
+
+                valid = false;
+            } else if (index >= literature.size()) {
+                valid = false;
+            } else {
+                valid = true;
+            }
+        }
+        return valid;
     }
 }
