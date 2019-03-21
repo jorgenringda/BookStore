@@ -3,34 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package newsstand.shopping;
+package newsstand.register;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import newsstand.literature.Literature;
 
 /**
  *
  * @author Ishmael
  */
-public class Cart {
+public class CartRegister extends Register {
 
-    private ArrayList<Literature> shoppingCart;
-
-    public Cart() {
-        this.shoppingCart = new ArrayList<>();
+    public CartRegister() {
     }
 
     public void addLiteratureToCart(Literature literature) {
-        shoppingCart.add(literature);
+        this.literature.add(literature);
     }
 
     public void removeLiteratureFromCart(Literature literature) {
-        shoppingCart.remove(literature);
+        this.literature.remove(literature);
     }
 
-    public Iterator<Literature> getCartIterator() {
-        return this.shoppingCart.iterator();
+    public int getTotalForEach(Literature literature) {
+        return literature.getPrice() * literature.getQuantity();
+    }
 
+    public void clearCart() {
+        this.literature.clear();
     }
 }

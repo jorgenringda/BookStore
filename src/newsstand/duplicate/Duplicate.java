@@ -6,7 +6,7 @@
 package newsstand.duplicate;
 
 import java.util.Iterator;
-import newsstand.Register;
+import newsstand.register.Register;
 import newsstand.literature.Book;
 import newsstand.literature.Literature;
 import newsstand.literature.Magazine;
@@ -36,14 +36,10 @@ public class Duplicate {
         if (typeIterator.hasNext()) {
             while (typeIterator.hasNext() && duplicate) {
                 book = (Book) typeIterator.next();
-                if (book.getTitle().equals(duplicateBook.getTitle())) {
-                    if (book.getPublisher().equals(duplicateBook.getPublisher())) {
-                        if (book.getCategory().equals(duplicateBook.getCategory())) {
-                            if (book.getEdition() == duplicateBook.getEdition()) {
-                                if (book.getauthor().equals(duplicateBook.getauthor())) {
-                                    duplicate = true;
-                                }
-                            }
+                if (checkCommonDuplicate(duplicateBook, book)) {
+                    if (book.getEdition() == duplicateBook.getEdition()) {
+                        if (book.getauthor().equals(duplicateBook.getauthor())) {
+                            duplicate = true;
                         }
                     }
                 }
@@ -61,13 +57,9 @@ public class Duplicate {
         if (typeIterator.hasNext()) {
             while (typeIterator.hasNext() && duplicate) {
                 newspaper = (Newspaper) typeIterator.next();
-                if (newspaper.getTitle().equals(duplicateNewspaper.getTitle())) {
-                    if (newspaper.getPublisher().equals(duplicateNewspaper.getPublisher())) {
-                        if (newspaper.getCategory().equals(duplicateNewspaper.getCategory())) {
-                            if (newspaper.getDateOfRelease().equals(duplicateNewspaper.getDateOfRelease())) {
-                                duplicate = true;
-                            }
-                        }
+                if (checkCommonDuplicate(duplicateNewspaper, newspaper)) {
+                    if (newspaper.getDateOfRelease().equals(duplicateNewspaper.getDateOfRelease())) {
+                        duplicate = true;
                     }
                 }
             }
@@ -84,13 +76,9 @@ public class Duplicate {
         if (typeIterator.hasNext()) {
             while (typeIterator.hasNext() && !duplicate) {
                 magazine = (Magazine) typeIterator.next();
-                if (magazine.getTitle().equals(duplicateMagazine.getTitle())) {
-                    if (magazine.getPublisher().equals(duplicateMagazine.getPublisher())) {
-                        if (magazine.getCategory().equals(duplicateMagazine.getCategory())) {
-                            if (magazine.getReleasePerYear() == duplicateMagazine.getReleasePerYear()) {
-                                duplicate = true;
-                            }
-                        }
+                if (checkCommonDuplicate(duplicateMagazine, magazine)) {
+                    if (magazine.getReleasePerYear() == duplicateMagazine.getReleasePerYear()) {
+                        duplicate = true;
                     }
                 }
             }
@@ -99,5 +87,17 @@ public class Duplicate {
             magazine = null;
         }
         return magazine;
+    }
+
+    private boolean checkCommonDuplicate(Literature duplicateLiterature, Literature literatureInRegister) {
+        boolean duplicate = false;
+        if (literatureInRegister.getTitle().equals(duplicateLiterature.getTitle())) {
+            if (literatureInRegister.getPublisher().equals(duplicateLiterature.getPublisher())) {
+                if (literatureInRegister.getCategory().equals(duplicateLiterature.getCategory())) {
+                    duplicate = true;
+                }
+            }
+        }
+        return duplicate;
     }
 }

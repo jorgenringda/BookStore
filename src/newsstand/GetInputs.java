@@ -51,6 +51,27 @@ public class GetInputs {
     }
 
     /**
+     * Method that returns input from user as a integer
+     *
+     * @return input returns input typed by user as a integer
+     */
+    public int getIntInputMinMax(int min, int max) {
+        Scanner reader = new Scanner(System.in);
+        int input;
+        try {
+            input = reader.nextInt();
+            if (input < 0 || input < min || input > max) {
+                System.out.println("\nPlease enter a valid number\n");
+                input = getIntInputMinMax(min, max);
+            }
+        } catch (InputMismatchException error) {
+            System.out.println("\nPlease enter a valid number\n");
+            input = getIntInputMinMax(min, max);
+        }
+        return input;
+    }
+
+    /**
      * Method that returns input from user as a string
      *
      * @return input returns input typed by user as a string
