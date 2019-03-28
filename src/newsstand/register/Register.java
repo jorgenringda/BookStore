@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package newsstand.register;
 
 import newsstand.literature.Literature;
@@ -14,23 +9,30 @@ import newsstand.literature.Magazine;
 import newsstand.literature.Newspaper;
 
 /**
- * MagazineRegister for storing magazines
+ * Super class Register for storing Literature
  * <ul>
- * <li> Add Magazine </li>
- * <li> List all magazine </li>
- * <li> Get magazine by title </li>
- * <li> Get magazine by publisher </li>
- * <li> Removes magazine by title </li>
+ * <li> Get Iterator of Literature </li>
+ * <li> Get Literature by index </li>
+ * <li> Get Iterator of one type of Literature </li>
+ * <li> Removes Literature </li>
+ * <li> Get duplicate Literature </li>
  * </ul>
  *
  * @author Ultrareidar
  * @version V1.0
  */
-public class Register {
+public abstract class Register {
 
+    /**
+     * Hold a collection of Literature
+     */
     public ArrayList<Literature> literature;
+
     Duplicate duplicate;
 
+    /**
+     * Constructor. Instantiate Literature ArrayList. Instantiate Duplicate.
+     */
     public Register() {
         this.literature = new ArrayList<>();
         this.duplicate = new Duplicate();
@@ -45,6 +47,12 @@ public class Register {
         return literature.iterator();
     }
 
+    /**
+     * Method to get an object of Literature by index
+     *
+     * @param index is the index the object we are going to get is in
+     * @return the object that has been found
+     */
     public Literature getLiteratureByIndex(int index) {
         Literature literatureByIndex = null;
         if (indexValid(index)) {
@@ -56,7 +64,7 @@ public class Register {
     /**
      * Returns an iterator of ArrayList of specific literature
      *
-     * @param literature
+     * @param literature is an object of Literature
      * @return iterator of ArrayList of specify Literature
      */
     public Iterator<Literature> getTypeLiteratureIterator(Class<?> literature) {
@@ -86,38 +94,48 @@ public class Register {
         }
     }
 
+    /**
+     * Method that take the Literature parameter and check what it's an
+     * instanceof and loops through all Literature to check if there is a
+     * duplicate. returns the duplicate Literature that is already in register
+     *
+     * @param literature is the Literature that is being check if it has a
+     * duplicate.
+     * @return the duplicate Literature
+     */
     protected Literature getDuplicateLiterature(Literature literature) {
         Literature duplicateFound = null;
         if (literature instanceof Book) {
-            try {
-                Iterator<Literature> checkEmpty = getTypeLiteratureIterator(Book.class);
-                duplicateFound = duplicate.checkDuplicateBook((Book) literature, checkEmpty);
-            } catch (NullPointerException e) {
-            }
+            Iterator<Literature> checkEmpty
+                    = getTypeLiteratureIterator(Book.class);
+            duplicateFound = duplicate.
+                    checkDuplicateBook((Book) literature,
+                            checkEmpty);
         } else if (literature instanceof Magazine) {
-            try {
-                Iterator<Literature> checkEmpty = getTypeLiteratureIterator(Magazine.class);
-                duplicateFound = duplicate.checkDuplicateMagazine((Magazine) literature, checkEmpty);
-            } catch (NullPointerException e) {
-            }
+            Iterator<Literature> checkEmpty
+                    = getTypeLiteratureIterator(Magazine.class);
+            duplicateFound = duplicate.
+                    checkDuplicateMagazine((Magazine) literature,
+                            checkEmpty);
         } else if (literature instanceof Newspaper) {
-            try {
-                Iterator<Literature> checkEmpty = getTypeLiteratureIterator(Newspaper.class);
-                duplicateFound = duplicate.checkDuplicateNewspaper((Newspaper) literature, checkEmpty);
-            } catch (NullPointerException e) {
-            }
+            Iterator<Literature> checkEmpty
+                    = getTypeLiteratureIterator(Newspaper.class);
+            duplicateFound = duplicate.
+                    checkDuplicateNewspaper((Newspaper) literature,
+                            checkEmpty);
         }
         return duplicateFound;
     }
 
     /**
-     * checks if an index is valid and in use. returns true if.
+     * Checks if an index is valid and in use. Returns true if its valid.
      *
-     * @param index set number of the index that is going to be checked if valid
+     * @param index set number of the index that is going to be checked if
+     * valid.
      * @return valid witch it either true or false.
      */
     private boolean indexValid(int index) {
-        boolean valid = false;
+        boolean valid;
         if (index < 0) {
             valid = false;
         } else {

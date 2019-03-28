@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package newsstand.register;
 
 import newsstand.literature.Literature;
@@ -10,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * MagazineRegister for storing magazines
+ * Sub-class of Register LiteratureRegister for storing Literature
  * <ul>
- * <li> Add Magazine </li>
- * <li> List all magazine </li>
- * <li> Get magazine by title </li>
- * <li> Get magazine by publisher </li>
- * <li> Removes magazine by title </li>
+ * <li> Add Literature </li>
+ * <li> Get Literature by title as Iterator </li>
+ * <li> Get Literature by publisher as Iterator</li>
+ * <li> Get Literature to remove by title as Iterator</li>
  * </ul>
  *
  * @author Ultrareidar
@@ -24,39 +18,46 @@ import java.util.Iterator;
  */
 public class LiteratureRegister extends Register {
 
+    /**
+     * Constructor. Don't instantiate anything, everything is done by super
+     * class.
+     */
     public LiteratureRegister() {
         super();
     }
 
     /**
-     * Add a new magazine into a ArrayList of magazines.
+     * Add a new Literature into a ArrayList of Literature. Also checks if the
+     * Literature already exist, and if it does, it's increase the quantity.
+     * Checks also if the Literature is valid.
      *
-     * @param literature
-     * @return a Boolean true or false if magazine is added or not
+     * @param literature is a Literature that is going to be added
+     * @return a Boolean true or false if Literature is added or not
      */
     public boolean addLiterature(Literature literature) {
-        boolean magazineAdded = false;
+
+        boolean literatureAdded = false;
         try {
             getDuplicateLiterature(literature).increaseStock();
         } catch (NullPointerException e) {
             try {
                 if (literature.isLiteratureValid()) {
-                    magazineAdded = this.literature.add(literature);
-                    magazineAdded = true;
+                    literatureAdded = this.literature.add(literature);
+                    //literatureAdded = true;
                 }
             } catch (NullPointerException error) {
-                magazineAdded = false;
+                literatureAdded = false;
             }
         }
-        return magazineAdded;
+        return literatureAdded;
     }
 
     /**
      * Search for object of type literature that contains the given title,
-     * returns a ArrayList of all the literature that contains the title.
+     * returns an Iterator of all the literature that contains the title.
      *
      * @param title contains the set title as a string.
-     * @return an ArrayList that contains all the object of type literature that
+     * @return an Iterator that contains all the object of type literature that
      * contains the title.
      */
     public Iterator<Literature> getLiteratureByTitle(String title) {
@@ -73,32 +74,11 @@ public class LiteratureRegister extends Register {
     }
 
     /**
-     * Search for object of type literature that contains the given title,
-     * returns a ArrayList of all the literature that contains the title.
-     *
-     * @param title contains the set title as a string.
-     * @return an ArrayList that contains all the object of type literature that
-     * contains the title.
-     */
-    public ArrayList<Literature> getLiteratureByTitleArray(String title) {
-        ArrayList<Literature> literatureContains = new ArrayList<>();
-        if (!title.isEmpty()) {
-            for (Literature paper : literature) {
-                if (paper.getTitle().toUpperCase()
-                        .contains(title.toUpperCase())) {
-                    literatureContains.add(paper);
-                }
-            }
-        }
-        return literatureContains;
-    }
-
-    /**
      * Search for object of type literature that contains the given publisher,
-     * returns a ArrayList of all the literature that contains the publisher.
+     * returns an Iterator of all the literature that contains the publisher.
      *
      * @param publisher contains the set publisher as a string.
-     * @return an ArrayList that contains all the object of type literature that
+     * @return an Iterator that contains all the object of type literature that
      * contains the publisher.
      */
     public Iterator<Literature> getLiteraturesByPublisher(String publisher) {
@@ -117,7 +97,8 @@ public class LiteratureRegister extends Register {
     /**
      * Returns a Iterator of an ArrayList containing literature.
      *
-     * @param title
+     * @param title is the String word that is used to search for in an
+     * ArrayList
      * @return a Iterator of an ArrayList
      */
     public Iterator<Literature> getLiteratureToRemoveByTitle(String title) {

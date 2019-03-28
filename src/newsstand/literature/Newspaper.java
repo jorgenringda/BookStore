@@ -1,21 +1,12 @@
-/*
- * Represent a newspaper by title, publisher, release per year and
- * genre / category.
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package newsstand.literature;
 
 /**
- * Holds information about a magazine, It contains of a title, publisher and
- * publications per year
+ * Sub-class of Literature. Holds information about a Newspaper, It contains of
+ * a title, publisher, category, dateOfRelease, price and quantity.
  *
  * @author Ultrareidar
  */
 public class Newspaper extends Literature {
-
-    StringBuilder error = new StringBuilder();
 
     /**
      * The date the newspaper is released
@@ -23,12 +14,15 @@ public class Newspaper extends Literature {
     private String dateOfRelease;
 
     /**
-     * Constructor for objects of class Magazine.
+     * Constructor for objects of class Newspaper.
      *
-     * @param title
-     * @param publisher The publisher of the magazine
-     * @param dateOfRelease
-     * @param category The category of the magazine
+     * @param title is the title of the Newspaper
+     * @param publisher is the publisher of the Newspaper
+     * @param dateOfRelease is the release date of the Newspaper
+     * @param category is the category of the Newspaper
+     * @param price is the price of the Newspaper
+     * @param quantity is the quantity of the Newspaper that is being added to
+     * stock
      */
     public Newspaper(String title, String publisher,
             String category, String dateOfRelease, int price, int quantity) {
@@ -37,7 +31,7 @@ public class Newspaper extends Literature {
     }
 
     /**
-     * Returns the number of publications per year
+     * Returns the number of publications per year of the Magazine.
      *
      * @return number of publications per year
      */
@@ -46,10 +40,11 @@ public class Newspaper extends Literature {
     }
 
     /**
-     * Sets the value of this.category from parameter category. also check if
-     * the value from parameter is valid
+     * Sets the value of this.dateOfRelease from parameter dateOfRelease. Also
+     * check if the value from parameter is valid.
      *
-     * @param category parameter contains an string with the category
+     * @param dateOfRelease parameter contains an string with the date of
+     * release
      */
     private void setDateOfRelease(String dateOfRelease) {
         if (dateOfRelease == null) {

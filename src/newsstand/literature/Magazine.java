@@ -1,21 +1,12 @@
-/*
- * Represent a newspaper by title, publisher, release per year and
- * genre / category.
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package newsstand.literature;
 
 /**
- * Holds information about a magazine, It contains of a title, publisher and
- * publications per year
+ * Sub-class of Literature. Holds information about a magazine, It contains of a
+ * title, publisher, publications per year, category, price and quantity.
  *
  * @author Ultrareidar
  */
 public class Magazine extends Literature {
-
-    StringBuilder error = new StringBuilder();
 
     /**
      * Number of publications per year of this magazine
@@ -25,14 +16,16 @@ public class Magazine extends Literature {
     /**
      * Constructor for objects of class Magazine.
      *
-     * @param title The title of the magazine
-     * @param publisher
-     * @param category
-     * @param releasePerYear the number of release per year of the magazine
+     * @param title is the title of the Magazine
+     * @param publisher is the publisher of the Magazine
+     * @param category is the category of the Magazine
+     * @param releasePerYear is the release per year of the Magazine
+     * @param price is the price of the Magazine
+     * @param quantity is the quantity of Magazine that is being added to stock
      */
     public Magazine(String title, String publisher,
-            String category, int releasePerYear, int price, int amount) {
-        super(title, publisher, category, price, amount);
+            String category, int releasePerYear, int price, int quantity) {
+        super(title, publisher, category, price, quantity);
         setReleasePerYear(releasePerYear);
     }
 
@@ -46,7 +39,7 @@ public class Magazine extends Literature {
     }
 
     /**
-     * Sets the value of this.releasePerYear from parameter releasePerYear. also
+     * Sets the value of this.releasePerYear from parameter releasePerYear. Also
      * check if the value from parameter is valid
      *
      * @param releasePerYear parameter contains an int with number of release
