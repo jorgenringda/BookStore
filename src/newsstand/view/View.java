@@ -1,7 +1,7 @@
 package newsstand.view;
 
 import newsstand.GetInputs;
-import newsstand.literature.Literature;
+import newsstand.publication.Publication;
 
 /**
  * Super class of View
@@ -23,42 +23,42 @@ public abstract class View {
     }
 
     /**
-     * Method to return details of give Literature as a StringBuilder This is
+     * Method to return details of give Publication as a StringBuilder This is
      * part 1 of two methods that return details
      *
-     * @param literature , object of type Literature
-     * @return StringBuilder with details of literature
+     * @param publication , object of type Publication
+     * @return StringBuilder with details of publication
      */
-    protected StringBuilder getDetailsPart1(Literature literature) {
+    protected StringBuilder getDetailsPart1(Publication publication) {
         StringBuilder view = new StringBuilder();
 
         view.append("Title: ");
-        view.append(literature.getTitle());
+        view.append(publication.getTitle());
         view.append("  |  Publisher: ");
-        view.append(literature.getPublisher());
+        view.append(publication.getPublisher());
         view.append("  |  Category: ");
-        view.append(literature.getCategory());
+        view.append(publication.getCategory());
         return view;
     }
 
     /**
-     * Method to return details of give Literature as a StringBuilder This is
+     * Method to return details of give Publication as a StringBuilder This is
      * part 2 of two methods that return details
      *
-     * @param literature , object of type Literature
-     * @return StringBuilder with details of literature
+     * @param publication , object of type Publication
+     * @return StringBuilder with details of publication
      */
-    protected StringBuilder getDetailsPart2(Literature literature) {
+    protected StringBuilder getDetailsPart2(Publication publication) {
         StringBuilder view = new StringBuilder();
         view.append("  |  Price: ");
-        if (literature.getPrice() == 0) {
+        if (publication.getPrice() == 0) {
             view.append("Free");
         } else {
-            view.append(literature.getPrice());
+            view.append(publication.getPrice());
             view.append(" $");
         }
         view.append("  |  In Stock: ");
-        view.append(literature.getQuantity());
+        view.append(publication.getQuantity());
         return view;
     }
 
@@ -68,7 +68,7 @@ public abstract class View {
      * @return the title that is set
      */
     protected String getNewTitle() {
-        System.out.println("\nSet title of magazine: \n");
+        System.out.println("\nSet title: \n");
         String title = validInput.getStringInput();
         return title;
     }
@@ -79,7 +79,7 @@ public abstract class View {
      * @return the publisher that is set
      */
     protected String getNewPublisher() {
-        System.out.println("\nSet publisher of magazine: \n");
+        System.out.println("\nSet publisher: \n");
         String publisher = validInput.getStringInput();
         return publisher;
     }
@@ -90,7 +90,7 @@ public abstract class View {
      * @return the category that is set
      */
     protected String getNewCategory() {
-        System.out.println("\nSet category of magazine: \n");
+        System.out.println("\nSet category: \n");
         String category = validInput.getStringInput();
         return category;
     }
@@ -101,7 +101,7 @@ public abstract class View {
      * @return the price that is set
      */
     protected int getNewPrice() {
-        System.out.println("\nSet price of magazine: \n");
+        System.out.println("\nSet price: \n");
         int price = validInput.getIntInput();
         return price;
     }
@@ -114,7 +114,7 @@ public abstract class View {
     protected int getNewQuantity() {
         int amount = 1;
         System.out.println("Type yes if you want to "
-                + "add more than one of this literature!");
+                + "add more than one of this publication!");
         if (validInput.getStringInput().trim().toUpperCase().equals("YES")) {
             System.out.println("Type the amount you want to add: ");
             amount = validInput.getIntInput();
@@ -123,17 +123,17 @@ public abstract class View {
     }
 
     /**
-     * Abstract method that creates Literature in each sub-Classes.
+     * Abstract method that creates Publication in each sub-Classes.
      *
-     * @return the Literature that is created
+     * @return the Publication that is created
      */
-    public abstract Literature createLiterature();
+    public abstract Publication createPublication();
 
     /**
-     * Abstract method that returns details of Literature in each sub-Class.
+     * Abstract method that returns details of Publication in each sub-Class.
      *
-     * @param literature is the Literature we want to get details from
-     * @return a StringBuilder with all the details from the Literature
+     * @param publication is the Publication we want to get details from
+     * @return a StringBuilder with all the details from the Publication
      */
-    public abstract StringBuilder getDetailsOfLiterature(Literature literature);
+    public abstract StringBuilder getDetailsOfPublication(Publication publication);
 }

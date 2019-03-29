@@ -5,7 +5,7 @@
  */
 package newsstand.register;
 
-import newsstand.literature.Literature;
+import newsstand.publication.Publication;
 
 /**
  * Sub-class of Register A register to store the item customer has put in his
@@ -21,35 +21,22 @@ public class CartRegister extends Register {
     public CartRegister() {
     }
 
-    public void addLiteratureToCart(Literature literature) {
-        this.literature.add(literature);
-    }
-
     /**
-     * Method that calls a Method that removes Literature from an ArrayList.
-     *
-     * @param literature is the Literature that is removed from the register
-     */
-    public void removeLiteratureFromCart(Literature literature) {
-        this.literature.remove(literature);
-    }
-
-    /**
-     * Method that gets price and quantity from a Literature stored in a
+     * Method that gets price and quantity from a Publication stored in a
      * cartRegister and calculate the total price and returns the total price.
      *
-     * @param literature is the Literature that we are going to get the total
+     * @param publication is the Publication that we are going to get the total
      * price from
-     * @return the total price of the Literature added to the register
+     * @return the total price of the Publication added to the register
      */
-    public int getTotalForEach(Literature literature) {
-        return literature.getPrice() * literature.getQuantity();
+    public int getTotalForEach(Publication publication) {
+        return publication.getPrice() * publication.getQuantity();
     }
 
     /**
      * Method that removes everything from cartRegister.
      */
     public void clearCart() {
-        this.literature.clear();
+        this.publication.clear();
     }
 }

@@ -1,12 +1,12 @@
-package newsstand.literature;
+package newsstand.publication;
 
 /**
- * Sub-class of Literature. Holds information about a Newspaper, It contains of
+ * Sub-class of Publication. Holds information about a Newspaper, It contains of
  * a title, publisher, category, dateOfRelease, price and quantity.
  *
  * @author Ultrareidar
  */
-public class Newspaper extends Literature {
+public class Newspaper extends Publication {
 
     /**
      * The date the newspaper is released
@@ -31,15 +31,6 @@ public class Newspaper extends Literature {
     }
 
     /**
-     * Returns the number of publications per year of the Magazine.
-     *
-     * @return number of publications per year
-     */
-    public String getDateOfRelease() {
-        return this.dateOfRelease;
-    }
-
-    /**
      * Sets the value of this.dateOfRelease from parameter dateOfRelease. Also
      * check if the value from parameter is valid.
      *
@@ -56,5 +47,14 @@ public class Newspaper extends Literature {
         } else {
             valid = false;
         }
+    }
+
+    /**
+     * Returns the number of publications per year of the Newspaper.
+     *
+     * @return number of publications per year
+     */
+    public String getDateOfRelease() {
+        return this.dateOfRelease;
     }
 }

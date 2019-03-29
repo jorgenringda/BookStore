@@ -5,8 +5,8 @@
  */
 package newsstand.view;
 
-import newsstand.literature.Literature;
-import newsstand.literature.Magazine;
+import newsstand.publication.Publication;
+import newsstand.publication.Magazine;
 
 /**
  * Sub-class of View. Class that creates Magazine and return details of
@@ -22,7 +22,7 @@ public class MagazineView extends View {
      * @param magazine is the Magazine that we are going to get details from.
      * @return a StringBuilder with all details of a Magazine.
      */
-    public StringBuilder getDetailsOfLiterature(Literature magazine) {
+    public StringBuilder getDetailsOfPublication(Publication magazine) {
         Magazine magazine1 = (Magazine) magazine;
         StringBuilder view = new StringBuilder();
         view.append(super.getDetailsPart1(magazine));
@@ -40,18 +40,18 @@ public class MagazineView extends View {
      * @return the Magazine that has been created.
      */
     @Override
-    public Magazine createLiterature() {
+    public Magazine createPublication() {
         Magazine magazineToReturn = null;
         String title = super.getNewTitle();
         String publisher = super.getNewPublisher();
         String category = super.getNewCategory();
-        System.out.println("\nSet release per year of magazine: \n");
+        System.out.println("\nSet release per year: \n");
         int edition = validInput.getIntInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
         Magazine magazine = new Magazine(title, publisher, category,
                 edition, price, amount);
-        if (magazine.isLiteratureValid()) {
+        if (magazine.isPublicationValid()) {
             magazineToReturn = magazine;
         }
         return magazineToReturn;

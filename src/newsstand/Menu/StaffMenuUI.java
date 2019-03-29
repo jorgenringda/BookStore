@@ -1,22 +1,23 @@
 package newsstand.Menu;
 
-import newsstand.literature.Literature;
-import newsstand.literature.Newspaper;
+import newsstand.publication.Publication;
+import newsstand.publication.Newspaper;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
-import newsstand.literature.Book;
-import newsstand.literature.Magazine;
-import newsstand.register.LiteratureRegister;
+import newsstand.publication.Book;
+import newsstand.publication.Magazine;
+import newsstand.publication.Movie;
+import newsstand.register.publicationRegister;
 
 /**
  * A sub-class. Class that are interacting with the user, and does this methods:
  * <ul>
- * <li> Add new literature </li>
- * <li> Add and removes quantity to/from a literature in stock </li>
- * <li> List all literature in register </li>
- * <li> Search after literature by title and publisher </li>
- * <li> Removes literature by title </li>
+ * <li> Add new publication </li>
+ * <li> Add and removes quantity to/from a publication in stock </li>
+ * <li> List all publication in register </li>
+ * <li> Search after publication by title and publisher </li>
+ * <li> Removes publication by title </li>
  * </ul>
  *
  * @author Ultrareidar
@@ -28,7 +29,7 @@ public class StaffMenuUI extends Menu {
      * The menus that will be displayed.
      */
     private final String[] menuItems;
-    private final String[] typeLiterature;
+    private final String[] typePublication;
 
     /**
      * Creates the two menus and address what the menu option should say.
@@ -36,20 +37,21 @@ public class StaffMenuUI extends Menu {
     public StaffMenuUI() {
         super();
         this.menuItems = new String[]{
-            "Add new literature",
-            "Add more quantity to a literature in stock",
-            "Remove quantity from a literature in stock",
-            "List all literature",
-            "Search after literature by title",
-            "Search after literature by publisher",
-            "Remove a literature by title",
+            "Add new publication",
+            "Add more quantity to a publication in stock",
+            "Remove quantity from a publication in stock",
+            "List all publication",
+            "Search after publication by title",
+            "Search after publication by publisher",
+            "Remove a publication by title",
             "Auto fyll",
             "Return"};
 
-        this.typeLiterature = new String[]{
+        this.typePublication = new String[]{
             "Magazine",
             "Book",
             "Newspaper",
+            "Movie",
             "Return"};
 
     }
@@ -57,12 +59,12 @@ public class StaffMenuUI extends Menu {
     /**
      * Showing the menu and retrieving input from the user.
      *
-     * @param literature is the register with Literature the application is
+     * @param publication is the register with Publication the application is
      * using
      * @return the updated register
      */
-    public LiteratureRegister mainMenu(LiteratureRegister literature) {
-        this.literature = literature;
+    public publicationRegister mainMenu(publicationRegister publication) {
+        this.publication = publication;
         boolean quit = false;
         while (!quit) {
             try {
@@ -117,43 +119,48 @@ public class StaffMenuUI extends Menu {
 
             }
         }
-        return this.literature;
+        return this.publication;
     }
 
     /**
-     * Add a new product/literature to the register. First reading the input
-     * value and stores it. When all variable is set its add the Literature if
+     * Add a new product/publication to the register. First reading the input
+     * value and stores it. When all variable is set its add the Publication if
      * the inputs are valid.
      */
     private void addNewProduct() {
-        boolean literatureAdded = false;
+        boolean publicationAdded = false;
         boolean back = false;
         while (!back) {
             try {
-                int literatureSelection = showMenu(this.typeLiterature);
-                switch (literatureSelection) {
+                int publicationSelection = showMenu(this.typePublication);
+                switch (publicationSelection) {
                     case 1:
                         Magazine magazineToAdd
-                                = this.magazine.createLiterature();
-                        literatureAdded
-                                = this.literature.addLiterature(magazineToAdd);
+                                = this.magazine.createPublication();
+                        publicationAdded
+                                = this.publication.addPublication(magazineToAdd);
                         break;
 
                     case 2:
                         Book bookToAdd
-                                = this.book.createLiterature();
-                        literatureAdded
-                                = this.literature.addLiterature(bookToAdd);
+                                = this.book.createPublication();
+                        publicationAdded
+                                = this.publication.addPublication(bookToAdd);
                         break;
 
                     case 3:
                         Newspaper newspaperToAdd
-                                = this.newspaper.createLiterature();
-                        literatureAdded
-                                = this.literature.addLiterature(newspaperToAdd);
+                                = this.newspaper.createPublication();
+                        publicationAdded
+                                = this.publication.addPublication(newspaperToAdd);
                         break;
-
                     case 4:
+                        Movie movieToAdd
+                                = this.movie.createPublication();
+                        publicationAdded
+                                = this.publication.addPublication(movieToAdd);
+                        break;
+                    case 5:
                         back = true;
                         break;
 
@@ -165,13 +172,144 @@ public class StaffMenuUI extends Menu {
             } catch (InputMismatchException ime) {
                 System.out.println("\nERROR: Please provide a number "
                         + "between 1 and "
-                        + this.typeLiterature.length + "..\n");
+                        + this.typePublication.length + "..\n");
             }
-            if (literatureAdded) {
-                System.out.println("Literature is added");
+            if (publicationAdded) {
+                System.out.println("Publication is added");
             } else {
-                printError(ErrorMessage.literatureNotAdded);
+                printError(ErrorMessage.publicationNotAdded);
             }
+        }
+    }
+
+    /**
+     * Method to check if there is something in register and print out if it's
+     * something there, or print out error message.
+     */
+    private void listAll() {
+        if (!this.listAllProductsByIterator(this.publication.getPublicationInOrder())) {
+            printError(ErrorMessage.emptyList);
+        }
+    }
+
+    /**
+     * Method to check if the register contains a Publication with the specific
+     * title. Prints out all that have it, if no one contains the title it
+     * prints error message.
+     */
+    private void listAllByTitle() {
+        if (!this.listAllProductsByIterator(getProductsIteratorByTitle())) {
+            printError(ErrorMessage.emptyList);
+        }
+    }
+
+    /**
+     * Method to check if the register contains a Publication with the specific
+     * publisher. Prints out all that have it, if no one contains the publisher
+     * it prints error message.
+     */
+    private void listAllByPublisher() {
+        if (!this.listAllProductsByIterator(getProductIteratorByPublisher())) {
+            printError(ErrorMessage.emptyList);
+        }
+    }
+
+    /**
+     * Gets input from user that have chosen an index of an arrayList to return.
+     *
+     * @return the Publication chosen by user
+     */
+    private Publication getInputPublication() {
+        Publication publicationToAdd = null;
+        int publicationToAddQuantity = validInput.getIntInput() - 1;
+        if (this.publication.getPublicationByIndex(
+                publicationToAddQuantity) != null) {
+            publicationToAdd
+                    = this.publication.getPublicationByIndex(
+                            publicationToAddQuantity);
+        } else {
+            System.out.println("Did not add any amount because the number of "
+                    + "the publication you want to add quantity to, "
+                    + "does not exsist");
+        }
+
+        return publicationToAdd;
+    }
+
+    /**
+     * Find the publication or publications that contains the title typed by
+     * user, and adds it in an ArrayList.
+     *
+     * @return an Iterator of all Publication containing the title
+     */
+    private Iterator<Publication> getProductsIteratorByTitle() {
+        System.out.println("\ntype title of publication: \n");
+        String title = validInput.getStringInput();
+        Iterator<Publication> allPublicationByTitle = null;
+        if (title == null) {
+            printError(ErrorMessage.noTitle);
+        } else {
+            allPublicationByTitle
+                    = this.publication.getPublicationByTitle(title);
+        }
+        return allPublicationByTitle;
+    }
+
+    /**
+     * Find the Publication or publications that contains the publisher typed by
+     * user, and adds it in an ArrayList.
+     *
+     * @return an Iterator of all Publication containing the publisher
+     */
+    private Iterator<Publication> getProductIteratorByPublisher() {
+        System.out.println("\ntype publisher of publication: \n");
+        String publisher = validInput.getStringInput();
+        Iterator<Publication> allPublicationByPublisher = null;
+        if (publisher == null) {
+            printError(ErrorMessage.noPublisher);
+        } else {
+            allPublicationByPublisher
+                    = this.publication.getPublicationsByPublisher(publisher);
+
+        }
+        return allPublicationByPublisher;
+    }
+
+    /**
+     * List a list of Publication that you can remove found from the input,
+     * typed by user. Removes the publication at the index user choose.
+     */
+    private void removeProductByTitle() {
+        System.out.println("Type the title of publication you want to remove");
+        String title = validInput.getStringInput();
+        ArrayList<Publication> removePublicationList;
+        removePublicationList = new ArrayList<>();
+        Iterator<Publication> publicationToRemoveIterator
+                = this.publication.getPublicationToRemoveByTitle(title);
+        if (publicationToRemoveIterator.hasNext()) {
+            publicationToRemoveIterator.forEachRemaining(
+                    removePublicationList::add);
+            listAllProductsByIterator(removePublicationList.iterator());
+            Publication publicationToRemove
+                    = decideProductToRemove(removePublicationList);
+            if (publicationToRemove != null) {
+                if (publicationToRemove.getQuantity() > 1) {
+                    System.out.println("title: "
+                            + publicationToRemove.getTitle()
+                            + "  | Publication stock is decreased by 1");
+                    publicationToRemove.decreaseStock();
+                } else {
+                    System.out.println("title: "
+                            + publicationToRemove.getTitle()
+                            + " | Publication is remove");
+                    this.publication.removePublication(publicationToRemove);
+                }
+            } else {
+                System.out.println("No product have been removed");
+            }
+        } else {
+            printError(ErrorMessage.noPublication);
+
         }
     }
 
@@ -179,19 +317,19 @@ public class StaffMenuUI extends Menu {
      * Method that adds quantity to stock.
      */
     private void addQuantity() {
-        if (listAllProductsByIterator(this.literature.getIterator())) {
+        if (listAllProductsByIterator(this.publication.getIterator())) {
             System.out.println("Enter the number of the "
-                    + "literature you want to add quantity to!");
-            Literature literatureToAdd = getInputLiterature();
-            if (literatureToAdd != null) {
+                    + "publication you want to add quantity to!");
+            Publication publicationToAdd = getInputPublication();
+            if (publicationToAdd != null) {
                 System.out.println("Enter the amount you want to add: ");
                 int quantity = validInput.getIntInput();
                 System.out.println("You have now added "
-                        + quantity + " to " + literatureToAdd.getTitle());
-                literatureToAdd.addOrRemoveStock(quantity);
+                        + quantity + " to " + publicationToAdd.getTitle());
+                publicationToAdd.addOrRemoveStock(quantity);
             }
         } else {
-            System.out.println("\nNo literature in newsstand");
+            System.out.println("\nNo publication in newsstand");
         }
     }
 
@@ -199,18 +337,18 @@ public class StaffMenuUI extends Menu {
      * Method that removes quantity from stock.
      */
     private void removeQuantity() {
-        if (listAllProductsByIterator(this.literature.getIterator())) {
+        if (listAllProductsByIterator(this.publication.getIterator())) {
             System.out.println("Enter the number of the "
-                    + "literature you want to remove quantity from!");
-            Literature literatureToAdd = getInputLiterature();
-            if (literatureToAdd != null) {
+                    + "publication you want to remove quantity from!");
+            Publication publicationToAdd = getInputPublication();
+            if (publicationToAdd != null) {
                 System.out.println("Enter the amount you want to remove: ");
                 int quantity = validInput.getIntInput();
-                if (literatureToAdd.getQuantity() - quantity >= 1) {
+                if (publicationToAdd.getQuantity() - quantity >= 1) {
                     System.out.println("You have now removed "
-                            + quantity + " from " + literatureToAdd.getTitle());
-                    literatureToAdd.addOrRemoveStock(quantity);
-                } else if (literatureToAdd.getQuantity() - quantity < 0) {
+                            + quantity + " from " + publicationToAdd.getTitle());
+                    publicationToAdd.addOrRemoveStock(quantity);
+                } else if (publicationToAdd.getQuantity() - quantity < 0) {
                     System.out.println("The amount you want to remove is "
                             + "more than we have in stock, "
                             + "therefore not possible. "
@@ -224,178 +362,47 @@ public class StaffMenuUI extends Menu {
                 }
             }
         } else {
-            System.out.println("\nNo literature in newsstand");
-        }
-    }
-
-    /**
-     * Method to check if there is something in register and print out if it's
-     * something there, or print out error message.
-     */
-    private void listAll() {
-        if (!this.listAllProductsByIterator(this.literature.getIterator())) {
-            printError(ErrorMessage.emptyList);
-        }
-    }
-
-    /**
-     * Method to check if the register contains a Literature with the specific
-     * title. Prints out all that have it, if no one contains the title it
-     * prints error message.
-     */
-    private void listAllByTitle() {
-        if (!this.listAllProductsByIterator(getProductsIteratorByTitle())) {
-            printError(ErrorMessage.emptyList);
-        }
-    }
-
-    /**
-     * Method to check if the register contains a Literature with the specific
-     * publisher. Prints out all that have it, if no one contains the publisher
-     * it prints error message.
-     */
-    private void listAllByPublisher() {
-        if (!this.listAllProductsByIterator(getProductIteratorByPublisher())) {
-            printError(ErrorMessage.emptyList);
-        }
-    }
-
-    /**
-     * Gets input from user that have chosen an index of an arrayList to return.
-     *
-     * @return the Literature chosen by user
-     */
-    private Literature getInputLiterature() {
-        Literature literatureToAdd = null;
-        int literatureToAddQuantity = validInput.getIntInput() - 1;
-        if (this.literature.getLiteratureByIndex(
-                literatureToAddQuantity) != null) {
-            literatureToAdd
-                    = this.literature.getLiteratureByIndex(
-                            literatureToAddQuantity);
-        } else {
-            System.out.println("Did not add any amount because the number of "
-                    + "the literature you want to add quantity to, "
-                    + "does not exsist");
-        }
-
-        return literatureToAdd;
-    }
-
-    /**
-     * Find the literature or literatures that contains the title typed by user,
-     * and adds it in an ArrayList.
-     *
-     * @return an Iterator of all Literature containing the title
-     */
-    private Iterator<Literature> getProductsIteratorByTitle() {
-        System.out.println("\ntype title of literature: \n");
-        String title = validInput.getStringInput();
-        Iterator<Literature> allLiteratureByTitle = null;
-        if (title == null) {
-            printError(ErrorMessage.noTitle);
-        } else {
-            allLiteratureByTitle
-                    = this.literature.getLiteratureByTitle(title);
-        }
-        return allLiteratureByTitle;
-    }
-
-    /**
-     * Find the Literature or literatures that contains the publisher typed by
-     * user, and adds it in an ArrayList.
-     *
-     * @return an Iterator of all Literature containing the publisher
-     */
-    private Iterator<Literature> getProductIteratorByPublisher() {
-        System.out.println("\ntype publisher of literature: \n");
-        String publisher = validInput.getStringInput();
-        Iterator<Literature> allLiteratureByPublisher = null;
-        if (publisher == null) {
-            printError(ErrorMessage.noPublisher);
-        } else {
-            allLiteratureByPublisher
-                    = this.literature.getLiteraturesByPublisher(publisher);
-
-        }
-        return allLiteratureByPublisher;
-    }
-
-    /**
-     * List a list of Literature that you can remove found from the input, typed
-     * by user. Removes the literature at the index user choose.
-     */
-    private void removeProductByTitle() {
-        System.out.println("Type the title of literature you want to remove");
-        String title = validInput.getStringInput();
-        ArrayList<Literature> removeLiteratureList;
-        removeLiteratureList = new ArrayList<>();
-        Iterator<Literature> literatureToRemoveIterator
-                = this.literature.getLiteratureToRemoveByTitle(title);
-        if (literatureToRemoveIterator.hasNext()) {
-            literatureToRemoveIterator.forEachRemaining(
-                    removeLiteratureList::add);
-            listAllProductsByIterator(removeLiteratureList.iterator());
-            Literature literatureToRemove
-                    = decideProductToRemove(removeLiteratureList);
-            if (literatureToRemove != null) {
-                if (literatureToRemove.getQuantity() > 1) {
-                    System.out.println("title: "
-                            + literatureToRemove.getTitle()
-                            + "  | Literature stock is decreased by 1");
-                    literatureToRemove.decreaseStock();
-                } else {
-                    System.out.println("title: "
-                            + literatureToRemove.getTitle()
-                            + " | Literature is remove");
-                    this.literature.removeLiterature(literatureToRemove);
-                }
-            } else {
-                System.out.println("No product have been removed");
-            }
-        } else {
-            printError(ErrorMessage.noLiterature);
-
+            System.out.println("\nNo publication in newsstand");
         }
     }
 
     /**
      * Method that get input from user that is choosing an index of an ArrayList
-     * of Literature that can be removed from register.
+     * of Publication that can be removed from register.
      *
-     * @param removeLiteratureList is the list with Literature that we can
+     * @param removePublicationList is the list with Publication that we can
      * remove from register
-     * @return the Literature that is going to be removed
+     * @return the Publication that is going to be removed
      */
-    private Literature decideProductToRemove(
-            ArrayList<Literature> removeLiteratureList) {
-        int number = removeLiteratureList.size();
-        Literature literatureToRemove = null;
-        if (removeLiteratureList.size() > 1) {
+    private Publication decideProductToRemove(
+            ArrayList<Publication> removePublicationList) {
+        int number = removePublicationList.size();
+        Publication publicationToRemove = null;
+        if (removePublicationList.size() > 1) {
             System.out.println("Please choose number between (1-" + number
                     + " to remove): \n");
             number = validInput.getIntInput() - 1;
-            literatureToRemove = removeLiteratureList.get(number);
+            publicationToRemove = removePublicationList.get(number);
 
         } else {
             System.out.println("Do you want to delete/decrease "
-                    + "stock of this literature? "
+                    + "stock of this publication? "
                     + "\nIf yes, type Yes, else type anything and enter\n");
             String yes = validInput.getStringInput();
             if (yes.trim().toUpperCase().equals("YES")) {
-                literatureToRemove = removeLiteratureList.get(0);
+                publicationToRemove = removePublicationList.get(0);
             }
         }
-        return literatureToRemove;
+        return publicationToRemove;
     }
 
     private void auto() {
         Magazine mag = new Magazine("hei", "nei", "sport", 2, 4, 3);
         Magazine mag1 = new Magazine("t", "nei", "sport", 2, 7, 1);
         Magazine mag2 = new Magazine("helty", "nei", "sport", 2, 4, 1);
-        this.literature.addLiterature(mag2);
-        this.literature.addLiterature(mag);
-        this.literature.addLiterature(mag1);
+        this.publication.addPublication(mag2);
+        this.publication.addPublication(mag);
+        this.publication.addPublication(mag1);
 
     }
 }

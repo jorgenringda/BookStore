@@ -1,12 +1,12 @@
-package newsstand.literature;
+package newsstand.publication;
 
 /**
- * Sub-class of Literature. Holds information about a Book, It contains of a
+ * Sub-class of Publication. Holds information about a Book, It contains of a
  * title, publisher, author, category, edition, price and quantity.
  *
  * @author Ultrareidar
  */
-public class Book extends Literature {
+public class Book extends Publication {
 
     private String author;
     private int edition;
@@ -28,25 +28,6 @@ public class Book extends Literature {
         super(title, publisher, category, price, quantity);
         setAuthor(author);
         setEdition(edition);
-
-    }
-
-    /**
-     * Method to return author of Book.
-     *
-     * @return the author of the Book
-     */
-    public String getauthor() {
-        return this.author;
-    }
-
-    /**
-     * Method that returns edition of the Book.
-     *
-     * @return the author of the Book
-     */
-    public int getEdition() {
-        return this.edition;
     }
 
     /**
@@ -79,5 +60,23 @@ public class Book extends Literature {
         } else {
             this.edition = edition;
         }
+    }
+
+    /**
+     * Method to return author of Book.
+     *
+     * @return the author of the Book
+     */
+    public String getauthor() {
+        return this.author;
+    }
+
+    /**
+     * Method that returns edition of the Book.
+     *
+     * @return the author of the Book
+     */
+    public int getEdition() {
+        return this.edition;
     }
 }

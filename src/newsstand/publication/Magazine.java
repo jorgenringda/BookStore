@@ -1,12 +1,12 @@
-package newsstand.literature;
+package newsstand.publication;
 
 /**
- * Sub-class of Literature. Holds information about a magazine, It contains of a
- * title, publisher, publications per year, category, price and quantity.
+ * Sub-class of Publication. Holds information about a magazine, It contains of
+ * a title, publisher, publications per year, category, price and quantity.
  *
  * @author Ultrareidar
  */
-public class Magazine extends Literature {
+public class Magazine extends Publication {
 
     /**
      * Number of publications per year of this magazine
@@ -30,15 +30,6 @@ public class Magazine extends Literature {
     }
 
     /**
-     * Returns the number of publications per year
-     *
-     * @return number of publications per year
-     */
-    public int getReleasePerYear() {
-        return this.releasePerYear;
-    }
-
-    /**
      * Sets the value of this.releasePerYear from parameter releasePerYear. Also
      * check if the value from parameter is valid
      *
@@ -51,6 +42,15 @@ public class Magazine extends Literature {
         } else {
             this.releasePerYear = releasePerYear;
         }
+    }
+
+    /**
+     * Returns the number of publications per year
+     *
+     * @return number of publications per year
+     */
+    public int getReleasePerYear() {
+        return this.releasePerYear;
     }
 
 }

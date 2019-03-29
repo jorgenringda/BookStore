@@ -1,18 +1,18 @@
-package newsstand.literature;
+package newsstand.publication;
 
 /**
- * A super class of Literature
+ * A super class of Publication
  *
  * @author Ishmael
  */
-public abstract class Literature {
+public abstract class Publication {
 
     /**
      * True or false if the parameters is valid or not.
      */
     protected boolean valid = true;
     /**
-     * The Literature title
+     * The Publication title
      */
     private String title;
 
@@ -22,31 +22,31 @@ public abstract class Literature {
     private String publisher;
 
     /**
-     * type of category the Literature is about.
+     * type of category the Publication is about.
      */
     private String category;
 
     /**
-     * The price of the Literature
+     * The price of the Publication
      */
     private int price;
 
     /**
-     * The quantity of the Literature
+     * The quantity of the Publication
      */
     private int quantity;
 
     /**
-     * Constructor for objects of class Literature.
+     * Constructor for objects of class Publication.
      *
-     * @param title is the title of the Literature
-     * @param publisher is the publisher of the Literature
-     * @param category is the category of the Literature
-     * @param price is the price of the Literature
-     * @param quantity is the quantity of the Literature that is being added to
+     * @param title is the title of the Publication
+     * @param publisher is the publisher of the Publication
+     * @param category is the category of the Publication
+     * @param price is the price of the Publication
+     * @param quantity is the quantity of the Publication that is being added to
      * stock
      */
-    public Literature(String title, String publisher,
+    public Publication(String title, String publisher,
             String category, int price, int quantity) {
         setTitle(title);
         setPublisher(publisher);
@@ -56,7 +56,7 @@ public abstract class Literature {
     }
 
     /**
-     * Method that sets the title of a Literature from parameter title. Also
+     * Method that sets the title of a Publication from parameter title. Also
      * check if the value from parameter is valid.
      *
      * @param title parameter contains a string with the title
@@ -74,7 +74,7 @@ public abstract class Literature {
     }
 
     /**
-     * Method that sets the publisher of a Literature from parameter publisher.
+     * Method that sets the publisher of a Publication from parameter publisher.
      * Also check if the value from parameter is valid.
      *
      * @param publisher parameter contains a string with the publisher
@@ -92,7 +92,7 @@ public abstract class Literature {
     }
 
     /**
-     * Method that sets the category of a Literature from parameter category.
+     * Method that sets the category of a Publication from parameter category.
      * Also check if the value from parameter is valid.
      *
      * @param category parameter contains a String with the category
@@ -110,7 +110,7 @@ public abstract class Literature {
     }
 
     /**
-     * Method that sets the price of a Literature from parameter price. Also
+     * Method that sets the price of a Publication from parameter price. Also
      * check if the value from parameter is valid.
      *
      * @param price parameter contains an int with the price
@@ -124,7 +124,7 @@ public abstract class Literature {
     }
 
     /**
-     * Method that sets the quantity of a Literature from parameter quantity.
+     * Method that sets the quantity of a Publication from parameter quantity.
      * Also check if the value from parameter is valid.
      *
      * @param quantity parameter contains an int with the quantity
@@ -138,68 +138,68 @@ public abstract class Literature {
     }
 
     /**
-     * Method that increase the quantity of a Literature by 1;
+     * Method that increase the quantity of a Publication by 1;
      */
     public void increaseStock() {
         quantity++;
     }
 
     /**
-     * Method that decrease the quantity of a Literature by 1.
+     * Method that decrease the quantity of a Publication by 1.
      */
     public void decreaseStock() {
         quantity--;
     }
 
     /**
-     * Method that add given quantity to a Literature.
+     * Method that add given quantity to a Publication.
      *
-     * @param quantity is the amount of a Literature we want to add
+     * @param quantity is the amount of a Publication we want to add
      */
     public void addOrRemoveStock(int quantity) {
         this.quantity += quantity;
     }
 
     /**
-     * Method that return the title of given Literature.
+     * Method that return the title of given Publication.
      *
-     * @return the title of a Literature.
+     * @return the title of a Publication.
      */
     public String getTitle() {
         return this.title;
     }
 
     /**
-     * Method that return the publisher of given Literature.
+     * Method that return the publisher of given Publication.
      *
-     * @return the publisher of a Literature
+     * @return the publisher of a Publication
      */
     public String getPublisher() {
         return this.publisher;
     }
 
     /**
-     * Method that return the category of given Literature.
+     * Method that return the category of given Publication.
      *
-     * @return the type of category the Literature
+     * @return the type of category the Publication
      */
     public String getCategory() {
         return this.category;
     }
 
     /**
-     * Method that return the price of given Literature.
+     * Method that return the price of given Publication.
      *
-     * @return price of a Literature
+     * @return price of a Publication
      */
     public int getPrice() {
         return this.price;
     }
 
     /**
-     * Method that return the quantity of given Literature.
+     * Method that return the quantity of given Publication.
      *
-     * @return quantity of a Literature
+     * @return quantity of a Publication
      */
     public int getQuantity() {
         return this.quantity;
@@ -210,7 +210,7 @@ public abstract class Literature {
      *
      * @return a Boolean true or false if the parameters is valid or not
      */
-    public boolean isLiteratureValid() {
+    public boolean isPublicationValid() {
         return valid;
     }
 }

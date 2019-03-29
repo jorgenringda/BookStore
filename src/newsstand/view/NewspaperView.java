@@ -5,8 +5,8 @@
  */
 package newsstand.view;
 
-import newsstand.literature.Literature;
-import newsstand.literature.Newspaper;
+import newsstand.publication.Publication;
+import newsstand.publication.Newspaper;
 
 /**
  * Sub-class of View. Class that creates Newspaper and return details of
@@ -23,7 +23,7 @@ public class NewspaperView extends View {
      * @return a StringBuilder with all details of a Newspaper.
      */
     @Override
-    public StringBuilder getDetailsOfLiterature(Literature newspaper) {
+    public StringBuilder getDetailsOfPublication(Publication newspaper) {
         Newspaper newspaper1 = (Newspaper) newspaper;
         StringBuilder view = new StringBuilder();
         view.append(super.getDetailsPart1(newspaper));
@@ -41,18 +41,18 @@ public class NewspaperView extends View {
      * @return the newspaper that has been created.
      */
     @Override
-    public Newspaper createLiterature() {
+    public Newspaper createPublication() {
         Newspaper newspaperToReturn = null;
         String title = super.getNewTitle();
         String publisher = super.getNewPublisher();
         String category = super.getNewCategory();
-        System.out.println("\nSet date of release of newspaper: \n");
+        System.out.println("\nSet date of release: \n");
         String dateOfRelease = validInput.getDateInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
         Newspaper newspaper = new Newspaper(title, publisher,
                 category, dateOfRelease, price, amount);
-        if (newspaper.isLiteratureValid()) {
+        if (newspaper.isPublicationValid()) {
             newspaperToReturn = newspaper;
         }
         return newspaperToReturn;

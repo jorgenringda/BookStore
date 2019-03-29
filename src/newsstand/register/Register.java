@@ -1,22 +1,23 @@
 package newsstand.register;
 
-import newsstand.literature.Literature;
+import newsstand.publication.Publication;
 import java.util.ArrayList;
 import java.util.Iterator;
 import newsstand.duplicate.Duplicate;
-import newsstand.literature.Book;
-import newsstand.literature.Magazine;
-import newsstand.literature.Newspaper;
+import newsstand.publication.Book;
+import newsstand.publication.Magazine;
+import newsstand.publication.Movie;
+import newsstand.publication.Newspaper;
 
 /**
- * Super class Register for storing Literature
+ * Super class Register for storing Publication
  * <ul>
- * <li> Add Literature </li>
- * <li> Get Iterator of Literature </li>
- * <li> Get Literature by index </li>
- * <li> Get Iterator of one type of Literature </li>
- * <li> Removes Literature </li>
- * <li> Get duplicate Literature </li>
+ * <li> Add Publication </li>
+ * <li> Get Iterator of Publication </li>
+ * <li> Get Publication by index </li>
+ * <li> Get Iterator of one type of Publication </li>
+ * <li> Removes Publication </li>
+ * <li> Get duplicate Publication </li>
  * </ul>
  *
  * @author Ultrareidar
@@ -25,130 +26,136 @@ import newsstand.literature.Newspaper;
 public abstract class Register {
 
     /**
-     * Hold a collection of Literature
+     * Hold a collection of Publication
      */
-    public ArrayList<Literature> literature;
+    public ArrayList<Publication> publication;
 
     Duplicate duplicate;
 
     /**
-     * Constructor. Instantiate Literature ArrayList. Instantiate Duplicate.
+     * Constructor. Instantiate Publication ArrayList. Instantiate Duplicate.
      */
     public Register() {
-        this.literature = new ArrayList<>();
+        this.publication = new ArrayList<>();
         this.duplicate = new Duplicate();
     }
 
     /**
-     * Add a new Literature into a ArrayList of Literature. Also checks if the
-     * Literature already exist, and if it does, it's increase the quantity.
-     * Checks also if the Literature is valid.
+     * Add a new Publication into a ArrayList of Publication. Also checks if the
+     * Publication already exist, and if it does, it's increase the quantity.
+     * Checks also if the Publication is valid.
      *
-     * @param literature is a Literature that is going to be added
-     * @return a Boolean true or false if Literature is added or not
+     * @param publication is a Publication that is going to be added
+     * @return a Boolean true or false if Publication is added or not
      */
-    public boolean addLiterature(Literature literature) {
+    public boolean addPublication(Publication publication) {
 
-        boolean literatureAdded = false;
+        boolean publicationAdded = false;
         try {
-            getDuplicateLiterature(literature).increaseStock();
+            getDuplicatePublication(publication).increaseStock();
         } catch (NullPointerException e) {
             try {
-                if (literature.isLiteratureValid()) {
-                    literatureAdded = this.literature.add(literature);
-                    //literatureAdded = true;
+                if (publication.isPublicationValid()) {
+                    publicationAdded = this.publication.add(publication);
+                    //publicationAdded = true;
                 }
             } catch (NullPointerException error) {
-                literatureAdded = false;
+                publicationAdded = false;
             }
         }
-        return literatureAdded;
+        return publicationAdded;
     }
 
     /**
-     * Returns an iterator of an ArrayList of all Literature
+     * Returns an iterator of an ArrayList of all Publication
      *
-     * @return iterator of ArrayList of Literature
+     * @return iterator of ArrayList of Publication
      */
-    public Iterator<Literature> getIterator() {
-        return literature.iterator();
+    public Iterator<Publication> getIterator() {
+        return publication.iterator();
     }
 
     /**
-     * Method to get an object of Literature by index
+     * Method to get an object of Publication by index
      *
      * @param index is the index the object we are going to get is in
      * @return the object that has been found
      */
-    public Literature getLiteratureByIndex(int index) {
-        Literature literatureByIndex = null;
+    public Publication getPublicationByIndex(int index) {
+        Publication publicationByIndex = null;
         if (indexValid(index)) {
-            literatureByIndex = this.literature.get(index);
+            publicationByIndex = this.publication.get(index);
         }
-        return literatureByIndex;
+        return publicationByIndex;
     }
 
     /**
-     * Returns an iterator of ArrayList of specific literature
+     * Returns an iterator of ArrayList of specific publication
      *
-     * @param literature is an object of Literature
-     * @return iterator of ArrayList of specify Literature
+     * @param publication is an object of Publication
+     * @return iterator of ArrayList of specify Publication
      */
-    public Iterator<Literature> getTypeLiteratureIterator(Class<?> literature) {
-        ArrayList<Literature> literatureContains = new ArrayList<>();
-        for (Literature type : this.literature) {
-            if (type.getClass() == literature) {
-                literatureContains.add(type);
+    public Iterator<Publication> getTypePublicationIterator(Class<?> publication) {
+        ArrayList<Publication> publicationContains = new ArrayList<>();
+        for (Publication type : this.publication) {
+            if (type.getClass() == publication) {
+                publicationContains.add(type);
             }
         }
-        return literatureContains.iterator();
+        return publicationContains.iterator();
     }
 
     /**
-     * Removes literature.
+     * Removes publication.
      *
-     * @param literatureToRemove the literature object user want to remove.
+     * @param publicationToRemove the publication object user want to remove.
      */
-    public void removeLiterature(Literature literatureToRemove) {
-        if (getDuplicateLiterature(literatureToRemove) == null) {
-            literature.remove(literatureToRemove);
+    public void removePublication(Publication publicationToRemove) {
+        if (getDuplicatePublication(publicationToRemove) == null) {
+            publication.remove(publicationToRemove);
         } else {
-            if (getDuplicateLiterature(literatureToRemove).getQuantity() <= 1) {
-                literature.remove(literatureToRemove);
+            if (getDuplicatePublication(publicationToRemove).getQuantity() <= 1) {
+                publication.remove(publicationToRemove);
             } else {
-                getDuplicateLiterature(literatureToRemove).decreaseStock();
+                getDuplicatePublication(publicationToRemove).decreaseStock();
             }
         }
     }
 
     /**
-     * Method that take the Literature parameter and check what it's an
-     * instanceof and loops through all Literature to check if there is a
-     * duplicate. returns the duplicate Literature that is already in register
+     * Method that take the Publication parameter and check what it's an
+     * instanceof and loops through all Publication to check if there is a
+     * duplicate. returns the duplicate Publication that is already in register
      *
-     * @param literature is the Literature that is being check if it has a
+     * @param publication is the Publication that is being check if it has a
      * duplicate.
-     * @return the duplicate Literature
+     * @return the duplicate Publication
      */
-    protected Literature getDuplicateLiterature(Literature literature) {
-        Literature duplicateFound = null;
-        if (literature instanceof Book) {
-            Iterator<Literature> checkEmpty
-                    = getTypeLiteratureIterator(Book.class);
+    protected Publication getDuplicatePublication(Publication publication) {
+        Publication duplicateFound = null;
+        if (publication instanceof Book) {
+            Iterator<Publication> checkEmpty
+                    = getTypePublicationIterator(Book.class);
             duplicateFound = duplicate.
-                    checkDuplicateBook((Book) literature,
+                    checkDuplicateBook((Book) publication,
                             checkEmpty);
-        } else if (literature instanceof Magazine) {
-            Iterator<Literature> checkEmpty
-                    = getTypeLiteratureIterator(Magazine.class);
+        } else if (publication instanceof Magazine) {
+            Iterator<Publication> checkEmpty
+                    = getTypePublicationIterator(Magazine.class);
             duplicateFound = duplicate.
-                    checkDuplicateMagazine((Magazine) literature,
+                    checkDuplicateMagazine((Magazine) publication,
                             checkEmpty);
-        } else if (literature instanceof Newspaper) {
-            Iterator<Literature> checkEmpty
-                    = getTypeLiteratureIterator(Newspaper.class);
+        } else if (publication instanceof Newspaper) {
+            Iterator<Publication> checkEmpty
+                    = getTypePublicationIterator(Newspaper.class);
             duplicateFound = duplicate.
-                    checkDuplicateNewspaper((Newspaper) literature,
+                    checkDuplicateNewspaper((Newspaper) publication,
+                            checkEmpty);
+        } else if (publication instanceof Movie) {
+            Iterator<Publication> checkEmpty
+                    = getTypePublicationIterator(Movie.class);
+            duplicateFound = duplicate.
+                    checkDuplicateMovie((Movie) publication,
                             checkEmpty);
         }
         return duplicateFound;
@@ -169,7 +176,7 @@ public abstract class Register {
             if (index < 0) {
 
                 valid = false;
-            } else if (index >= literature.size()) {
+            } else if (index >= publication.size()) {
                 valid = false;
             } else {
                 valid = true;

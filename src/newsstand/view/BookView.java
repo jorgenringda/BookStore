@@ -1,7 +1,7 @@
 package newsstand.view;
 
-import newsstand.literature.Book;
-import newsstand.literature.Literature;
+import newsstand.publication.Book;
+import newsstand.publication.Publication;
 
 /**
  * Sub-class of View. Class that creates Book and return details of Book.
@@ -17,7 +17,7 @@ public class BookView extends View {
      * @return a StringBuilder with all details of a Book.
      */
     @Override
-    public StringBuilder getDetailsOfLiterature(Literature book) {
+    public StringBuilder getDetailsOfPublication(Publication book) {
         Book book1 = (Book) book;
         StringBuilder view = new StringBuilder();
         view.append(super.getDetailsPart1(book));
@@ -37,19 +37,19 @@ public class BookView extends View {
      * @return the Book that has been created
      */
     @Override
-    public Book createLiterature() {
+    public Book createPublication() {
         Book bookToReturn = null;
         String title = super.getNewTitle();
         String publisher = super.getNewPublisher();
-        System.out.println("\nSet author of book: \n");
+        System.out.println("\nSet author: \n");
         String author = validInput.getStringInput();
         String category = super.getNewCategory();
-        System.out.println("\nSet edition of book: \n");
+        System.out.println("\nSet edition: \n");
         int edition = validInput.getIntInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
         Book book = new Book(title, publisher, author, category, edition, price, amount);
-        if (book.isLiteratureValid()) {
+        if (book.isPublicationValid()) {
             bookToReturn = book;
         }
         return bookToReturn;

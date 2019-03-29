@@ -1,14 +1,15 @@
 package newsstand.duplicate;
 
 import java.util.Iterator;
-import newsstand.literature.Book;
-import newsstand.literature.Literature;
-import newsstand.literature.Magazine;
-import newsstand.literature.Newspaper;
+import newsstand.publication.Book;
+import newsstand.publication.Publication;
+import newsstand.publication.Magazine;
+import newsstand.publication.Movie;
+import newsstand.publication.Newspaper;
 
 /**
- * Class that check if there is the same type of Literature in the register that
- * is being added.
+ * Class that check if there is the same type of Publication in the register
+ * that is being added.
  *
  * @author Ishmael
  */
@@ -21,7 +22,7 @@ public class Duplicate {
     }
 
     /**
-     * Method that checks for duplicates of Literature type Book. Returns the
+     * Method that checks for duplicates of Publication type Book. Returns the
      * duplicate Book if it has one else return null.
      *
      * @param duplicateBook is the Book that is being check if it has a
@@ -30,7 +31,7 @@ public class Duplicate {
      * @return the duplicate Book if it has one else return null.
      */
     public Book checkDuplicateBook(Book duplicateBook,
-            Iterator<Literature> typeIterator) {
+            Iterator<Publication> typeIterator) {
         boolean duplicate = false;
         Book book = null;
         if (typeIterator.hasNext()) {
@@ -53,37 +54,7 @@ public class Duplicate {
     }
 
     /**
-     * Method that checks for duplicates of Literature type Newspaper. Returns
-     * the duplicate Newspaper if it has one else return null.
-     *
-     * @param duplicateNewspaper is the Newspaper that is being check if it has
-     * a duplicate
-     * @param typeIterator is an Iterator of all Newspaper in the register
-     * @return the duplicate Newspaper if it has one else return null.
-     */
-    public Newspaper checkDuplicateNewspaper(Newspaper duplicateNewspaper,
-            Iterator<Literature> typeIterator) {
-        boolean duplicate = false;
-        Newspaper newspaper = null;
-        if (typeIterator.hasNext()) {
-            while (typeIterator.hasNext() && duplicate) {
-                newspaper = (Newspaper) typeIterator.next();
-                if (checkCommonDuplicate(duplicateNewspaper, newspaper)) {
-                    if (newspaper.getDateOfRelease().
-                            equals(duplicateNewspaper.getDateOfRelease())) {
-                        duplicate = true;
-                    }
-                }
-            }
-        }
-        if (!duplicate) {
-            newspaper = null;
-        }
-        return newspaper;
-    }
-
-    /**
-     * Method that checks for duplicates of Literature type Magazine. Returns
+     * Method that checks for duplicates of Publication type Magazine. Returns
      * the duplicate Magazine if it has one else return null.
      *
      * @param duplicateMagazine is the Magazine that is being check if it has a
@@ -92,7 +63,7 @@ public class Duplicate {
      * @return the duplicate Magazine if it has one else return null.
      */
     public Magazine checkDuplicateMagazine(Magazine duplicateMagazine,
-            Iterator<Literature> typeIterator) {
+            Iterator<Publication> typeIterator) {
         boolean duplicate = false;
         Magazine magazine = null;
         if (typeIterator.hasNext()) {
@@ -113,29 +84,92 @@ public class Duplicate {
     }
 
     /**
-     * Method that checks the type Literature for duplicate Literature. Checks
-     * only the parameters that is common for all type of Literature.
+     * Method that checks for duplicates of Publication type Newspaper. Returns
+     * the duplicate Newspaper if it has one else return null.
      *
-     * @param duplicateLiterature is the Literature that is being check if it
+     * @param duplicateNewspaper is the Newspaper that is being check if it has
+     * a duplicate
+     * @param typeIterator is an Iterator of all Newspaper in the register
+     * @return the duplicate Newspaper if it has one else return null.
+     */
+    public Newspaper checkDuplicateNewspaper(Newspaper duplicateNewspaper,
+            Iterator<Publication> typeIterator) {
+        boolean duplicate = false;
+        Newspaper newspaper = null;
+        if (typeIterator.hasNext()) {
+            while (typeIterator.hasNext() && duplicate) {
+                newspaper = (Newspaper) typeIterator.next();
+                if (checkCommonDuplicate(duplicateNewspaper, newspaper)) {
+                    if (newspaper.getDateOfRelease().
+                            equals(duplicateNewspaper.getDateOfRelease())) {
+                        duplicate = true;
+                    }
+                }
+            }
+        }
+        if (!duplicate) {
+            newspaper = null;
+        }
+        return newspaper;
+    }
+
+    /**
+     * Method that checks for duplicates of Publication type Movie. Returns the
+     * duplicate Movie if it has one else return null.
+     *
+     * @param duplicateMovie is the Movie that is being check if it has a
+     * duplicate
+     * @param typeIterator is an Iterator of all Movie in the register
+     * @return the duplicate Movie if it has one else return null.
+     */
+    public Movie checkDuplicateMovie(Movie duplicateMovie,
+            Iterator<Publication> typeIterator) {
+        boolean duplicate = false;
+        Movie movie = null;
+        if (typeIterator.hasNext()) {
+            while (typeIterator.hasNext() && duplicate) {
+                movie = (Movie) typeIterator.next();
+                if (checkCommonDuplicate(duplicateMovie, movie)) {
+                    if (movie.getDateOfRelease().
+                            equals(duplicateMovie.getDateOfRelease())) {
+                        if (movie.getDirector().equals(duplicateMovie.getDirector())) {
+                            duplicate = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (!duplicate) {
+            movie = null;
+        }
+        return movie;
+    }
+
+    /**
+     * Method that checks the type Publication for duplicate Publication. Checks
+     * only the parameters that is common for all type of Publication.
+     *
+     * @param duplicatePublication is the Publication that is being check if it
      * has a duplicate
-     * @param literatureInRegister is Literature in the register that we are
+     * @param publicationInRegister is Publication in the register that we are
      * checking if its duplicate with
-     * @return a Boolean true or false if it found if the two Literature is
+     * @return a Boolean true or false if it found if the two Publication is
      * duplicate on common parameters
      */
-    private boolean checkCommonDuplicate(Literature duplicateLiterature,
-            Literature literatureInRegister) {
+    private boolean checkCommonDuplicate(Publication duplicatePublication,
+            Publication publicationInRegister) {
         boolean duplicate = false;
-        if (literatureInRegister.getTitle().
-                equals(duplicateLiterature.getTitle())) {
-            if (literatureInRegister.getPublisher().
-                    equals(duplicateLiterature.getPublisher())) {
-                if (literatureInRegister.getCategory().
-                        equals(duplicateLiterature.getCategory())) {
+        if (publicationInRegister.getTitle().
+                equals(duplicatePublication.getTitle())) {
+            if (publicationInRegister.getPublisher().
+                    equals(duplicatePublication.getPublisher())) {
+                if (publicationInRegister.getCategory().
+                        equals(duplicatePublication.getCategory())) {
                     duplicate = true;
                 }
             }
         }
         return duplicate;
     }
+
 }
