@@ -11,6 +11,7 @@ import newsstand.literature.Newspaper;
 /**
  * Super class Register for storing Literature
  * <ul>
+ * <li> Add Literature </li>
  * <li> Get Iterator of Literature </li>
  * <li> Get Literature by index </li>
  * <li> Get Iterator of one type of Literature </li>
@@ -36,6 +37,32 @@ public abstract class Register {
     public Register() {
         this.literature = new ArrayList<>();
         this.duplicate = new Duplicate();
+    }
+
+    /**
+     * Add a new Literature into a ArrayList of Literature. Also checks if the
+     * Literature already exist, and if it does, it's increase the quantity.
+     * Checks also if the Literature is valid.
+     *
+     * @param literature is a Literature that is going to be added
+     * @return a Boolean true or false if Literature is added or not
+     */
+    public boolean addLiterature(Literature literature) {
+
+        boolean literatureAdded = false;
+        try {
+            getDuplicateLiterature(literature).increaseStock();
+        } catch (NullPointerException e) {
+            try {
+                if (literature.isLiteratureValid()) {
+                    literatureAdded = this.literature.add(literature);
+                    //literatureAdded = true;
+                }
+            } catch (NullPointerException error) {
+                literatureAdded = false;
+            }
+        }
+        return literatureAdded;
     }
 
     /**

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Random;
+import newsstand.literature.Book;
 import newsstand.literature.Literature;
+import newsstand.literature.Magazine;
+import newsstand.literature.Newspaper;
 import newsstand.register.CartRegister;
 import newsstand.register.LiteratureRegister;
 
@@ -265,9 +268,8 @@ public class ShopUI extends Menu {
                 int removeNumber = validInput.getIntInput() - 1;
                 Literature literatureToRemove
                         = shoppingCart.getLiteratureByIndex(removeNumber);
-                literatureToRemove.addOrRemoveStock(literatureToRemove.getQuantity() * -1);
-                literatureToRemove.increaseStock();
-                this.literature.addLiterature(literatureToRemove);
+                Literature addLiteratureToShop = copyObject(literatureToRemove);
+                this.literature.addLiterature(addLiteratureToShop);
                 System.out.println("Literature : "
                         + literatureToRemove.getTitle()
                         + " is removed from cart :(\n");
@@ -329,13 +331,11 @@ public class ShopUI extends Menu {
                     getIntInputMinMax(1, findLiteratureToAdd.size()) - 1;
             Literature literatureToAdd
                     = this.literature.getLiteratureByIndex(addNumber);
-            int quantity = literatureToAdd.getQuantity();
-            literatureToAdd.addOrRemoveStock(((-1) * quantity) + 1);
-            shoppingCart.addLiteratureToCart(literatureToAdd);
+            Literature addLiteratureToCart = copyObject(literatureToAdd);
+            shoppingCart.addLiterature(addLiteratureToCart);
             System.out.println("Literature : "
                     + literatureToAdd.getTitle()
                     + " is added to cart :)\n");
-            literatureToAdd.addOrRemoveStock(quantity);
             literature.removeLiterature(literatureToAdd);
         }
         return addMore;
@@ -373,4 +373,47 @@ public class ShopUI extends Menu {
 
         return wantToAddMore;
     }
+
+    /**
+     * Method that copy the object it gets from the parameter, this is to add it
+     * to two register with different stock. Stock is set to 1, the system sort
+     * out how many in stock.
+     *
+     * @param shopObject is the Literature we want to copy
+     * @return the copied Literature
+     */
+    private Literature copyObject(Literature shopObject) {
+        Literature object = null;
+        if (shopObject instanceof Book) {
+            Book shopBookObject = (Book) shopObject;
+            object = new Book(shopBookObject.getTitle(),
+                    shopBookObject.getPublisher(),
+                    shopBookObject.getauthor(),
+                    shopBookObject.getCategory(),
+                    shopBookObject.getEdition(),
+                    shopBookObject.getPrice(),
+                    1);
+        }
+        if (shopObject instanceof Magazine) {
+            Magazine shopMagazineObject = (Magazine) shopObject;
+            object = new Magazine(shopMagazineObject.getTitle(),
+                    shopMagazineObject.getPublisher(),
+                    shopMagazineObject.getCategory(),
+                    shopMagazineObject.getReleasePerYear(),
+                    shopMagazineObject.getPrice(),
+                    1);
+        }
+        if (shopObject instanceof Newspaper) {
+            Newspaper shopNewspaperObject = (Newspaper) shopObject;
+            object = new Newspaper(shopNewspaperObject.getTitle(),
+                    shopNewspaperObject.getPublisher(),
+                    shopNewspaperObject.getCategory(),
+                    shopNewspaperObject.getDateOfRelease(),
+                    shopNewspaperObject.getPrice(),
+                    1);
+        }
+
+        return object;
+    }
+
 }
