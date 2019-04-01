@@ -46,10 +46,11 @@ public class MovieView extends View {
         String dateOfRelease = validInput.getDateInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
-        Movie movie = new Movie(title, director, publisher,
-                category, dateOfRelease, price, amount);
-        if (movie.isPublicationValid()) {
+        try {
+            Movie movie = new Movie(title, director, publisher,
+                    category, dateOfRelease, price, amount);
             movieToReturn = movie;
+        } catch (IllegalArgumentException iae) {
         }
         return movieToReturn;
     }

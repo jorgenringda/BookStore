@@ -35,8 +35,8 @@ public class Movie extends Publication {
     }
 
     /**
-     * Sets the value of the director from parameter. Also check if the value
-     * from parameter is valid.
+     * Sets the value of the director from parameter. Throws exception if
+     * director is not valid.
      *
      * @param director parameter contains an string with the director
      */
@@ -48,13 +48,13 @@ public class Movie extends Publication {
         if (!director.isEmpty()) {
             this.director = director;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Director is not valid");
         }
     }
 
     /**
      * Sets the value of this.dateOfRelease from parameter dateOfRelease. Also
-     * check if the value from parameter is valid.
+     * Throws exception if date of release is not valid.
      *
      * @param dateOfRelease parameter contains an string with the date of
      * release
@@ -67,7 +67,7 @@ public class Movie extends Publication {
         if (!dateOfRelease.isEmpty()) {
             this.dateOfRelease = dateOfRelease;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Date of release is not valid");
         }
     }
 

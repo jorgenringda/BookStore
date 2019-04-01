@@ -285,7 +285,7 @@ public class StaffMenuUI extends Menu {
         ArrayList<Publication> removePublicationList;
         removePublicationList = new ArrayList<>();
         Iterator<Publication> publicationToRemoveIterator
-                = this.publication.getPublicationToRemoveByTitle(title);
+                = this.publication.getPublicationByTitle(title);
         if (publicationToRemoveIterator.hasNext()) {
             publicationToRemoveIterator.forEachRemaining(
                     removePublicationList::add);

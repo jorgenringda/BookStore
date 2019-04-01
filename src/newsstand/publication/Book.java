@@ -44,19 +44,19 @@ public class Book extends Publication {
         if (!author.isEmpty()) {
             this.author = author;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Author is not valid");
         }
     }
 
     /**
-     * Sets the value of this.edition from parameter edition. Also check if the
-     * value from parameter is valid
+     * Sets the value of this.edition from parameter edition. Throws exception
+     * if edition is not valid.
      *
      * @param edition parameter contains an int with the edition
      */
     private void setEdition(int edition) {
         if (edition <= 0) {
-            valid = false;
+            throw new IllegalArgumentException("Edition is negative or 0");
         } else {
             this.edition = edition;
         }

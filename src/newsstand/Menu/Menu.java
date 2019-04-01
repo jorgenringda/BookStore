@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.InputMismatchException;
 import java.util.Iterator;
-import newsstand.GetInputs;
+import newsstand.input.GetInputs;
 import newsstand.publication.Book;
 import newsstand.publication.Publication;
 import newsstand.publication.Magazine;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package newsstand.view;
 
 import newsstand.publication.Publication;
@@ -12,7 +7,7 @@ import newsstand.publication.Magazine;
  * Sub-class of View. Class that creates Magazine and return details of
  * Magazine.
  *
- * @author Ishmael
+ * @author UltraReidar
  */
 public class MagazineView extends View {
 
@@ -49,10 +44,11 @@ public class MagazineView extends View {
         int edition = validInput.getIntInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
-        Magazine magazine = new Magazine(title, publisher, category,
-                edition, price, amount);
-        if (magazine.isPublicationValid()) {
+        try {
+            Magazine magazine = new Magazine(title, publisher, category,
+                    edition, price, amount);
             magazineToReturn = magazine;
+        } catch (IllegalAccessError iae) {
         }
         return magazineToReturn;
     }

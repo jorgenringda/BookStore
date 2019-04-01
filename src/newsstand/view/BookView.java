@@ -6,7 +6,7 @@ import newsstand.publication.Publication;
 /**
  * Sub-class of View. Class that creates Book and return details of Book.
  *
- * @author Ishmael
+ * @author UltraReidar
  */
 public class BookView extends View {
 
@@ -48,9 +48,10 @@ public class BookView extends View {
         int edition = validInput.getIntInput();
         int price = super.getNewPrice();
         int amount = super.getNewQuantity();
-        Book book = new Book(title, publisher, author, category, edition, price, amount);
-        if (book.isPublicationValid()) {
+        try {
+            Book book = new Book(title, publisher, author, category, edition, price, amount);
             bookToReturn = book;
+        } catch (IllegalArgumentException iae) {
         }
         return bookToReturn;
     }

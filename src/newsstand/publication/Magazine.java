@@ -38,7 +38,7 @@ public class Magazine extends Publication {
      */
     private void setReleasePerYear(int releasePerYear) {
         if (releasePerYear <= 0) {
-            valid = false;
+            throw new IllegalArgumentException("Release per year is negative");
         } else {
             this.releasePerYear = releasePerYear;
         }

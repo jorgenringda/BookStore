@@ -52,15 +52,13 @@ public abstract class Register {
 
         boolean publicationAdded = false;
         try {
-            getDuplicatePublication(publication).increaseStock();
-        } catch (NullPointerException e) {
+            getDuplicatePublication(publication).
+                    addOrRemoveStock(publication.getQuantity());
+            publicationAdded = true;
+        } catch (NullPointerException npe) {
             try {
-                if (publication.isPublicationValid()) {
-                    publicationAdded = this.publication.add(publication);
-                    //publicationAdded = true;
-                }
-            } catch (NullPointerException error) {
-                publicationAdded = false;
+                publicationAdded = this.publication.add(publication);
+            } catch (IllegalArgumentException IAE) {
             }
         }
         return publicationAdded;
@@ -95,7 +93,8 @@ public abstract class Register {
      * @param publication is an object of Publication
      * @return iterator of ArrayList of specify Publication
      */
-    public Iterator<Publication> getTypePublicationIterator(Class<?> publication) {
+    public Iterator<Publication> getTypePublicationIterator(
+            Class<?> publication) {
         ArrayList<Publication> publicationContains = new ArrayList<>();
         for (Publication type : this.publication) {
             if (type.getClass() == publication) {
@@ -114,7 +113,8 @@ public abstract class Register {
         if (getDuplicatePublication(publicationToRemove) == null) {
             publication.remove(publicationToRemove);
         } else {
-            if (getDuplicatePublication(publicationToRemove).getQuantity() <= 1) {
+            if (getDuplicatePublication(publicationToRemove).
+                    getQuantity() <= 1) {
                 publication.remove(publicationToRemove);
             } else {
                 getDuplicatePublication(publicationToRemove).decreaseStock();

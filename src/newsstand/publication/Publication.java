@@ -3,7 +3,7 @@ package newsstand.publication;
 /**
  * A super class of Publication
  *
- * @author Ishmael
+ * @author UltraReidar
  */
 public abstract class Publication {
 
@@ -57,7 +57,7 @@ public abstract class Publication {
 
     /**
      * Method that sets the title of a Publication from parameter title. Also
-     * check if the value from parameter is valid.
+     * Throws exception if title is not valid.
      *
      * @param title parameter contains a string with the title
      */
@@ -69,13 +69,13 @@ public abstract class Publication {
         if (!title.isEmpty()) {
             this.title = title;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Title is not valid");
         }
     }
 
     /**
      * Method that sets the publisher of a Publication from parameter publisher.
-     * Also check if the value from parameter is valid.
+     * Throws exception if publisher is not valid.
      *
      * @param publisher parameter contains a string with the publisher
      */
@@ -87,13 +87,13 @@ public abstract class Publication {
         if (!publisher.isEmpty()) {
             this.publisher = publisher;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Publisher is not valid");
         }
     }
 
     /**
      * Method that sets the category of a Publication from parameter category.
-     * Also check if the value from parameter is valid.
+     * Throws exception if category is not valid.
      *
      * @param category parameter contains a String with the category
      */
@@ -105,19 +105,19 @@ public abstract class Publication {
         if (!category.isEmpty()) {
             this.category = category;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Category is not valid");
         }
     }
 
     /**
      * Method that sets the price of a Publication from parameter price. Also
-     * check if the value from parameter is valid.
+     * Throws exception if price is not valid.
      *
      * @param price parameter contains an int with the price
      */
     private void setPrice(int price) {
         if (price < 0) {
-            valid = false;
+            throw new IllegalArgumentException("Price is negative");
         } else {
             this.price = price;
         }
@@ -125,13 +125,13 @@ public abstract class Publication {
 
     /**
      * Method that sets the quantity of a Publication from parameter quantity.
-     * Also check if the value from parameter is valid.
+     * Throws exception if quantity is not valid.
      *
      * @param quantity parameter contains an int with the quantity
      */
     private void setQuantity(int quantity) {
         if (quantity < 0) {
-            valid = false;
+            throw new IllegalArgumentException("Quantity is negative");
         } else {
             this.quantity = quantity;
         }
@@ -148,7 +148,9 @@ public abstract class Publication {
      * Method that decrease the quantity of a Publication by 1.
      */
     public void decreaseStock() {
-        quantity--;
+        if (quantity >= 1) {
+            quantity--;
+        }
     }
 
     /**
@@ -157,7 +159,11 @@ public abstract class Publication {
      * @param quantity is the amount of a Publication we want to add
      */
     public void addOrRemoveStock(int quantity) {
-        this.quantity += quantity;
+        if ((this.quantity + quantity) < 0) {
+            this.quantity = 0;
+        } else {
+            this.quantity += quantity;
+        }
     }
 
     /**
@@ -203,14 +209,5 @@ public abstract class Publication {
      */
     public int getQuantity() {
         return this.quantity;
-    }
-
-    /**
-     * Method that return a Boolean true or false if the set parameters is valid
-     *
-     * @return a Boolean true or false if the parameters is valid or not
-     */
-    public boolean isPublicationValid() {
-        return valid;
     }
 }

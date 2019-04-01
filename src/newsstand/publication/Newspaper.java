@@ -32,7 +32,7 @@ public class Newspaper extends Publication {
 
     /**
      * Sets the value of this.dateOfRelease from parameter dateOfRelease. Also
-     * check if the value from parameter is valid.
+     * Throws exception if date of release is not valid.
      *
      * @param dateOfRelease parameter contains an string with the date of
      * release
@@ -45,7 +45,7 @@ public class Newspaper extends Publication {
         if (!dateOfRelease.isEmpty()) {
             this.dateOfRelease = dateOfRelease;
         } else {
-            valid = false;
+            throw new IllegalArgumentException("Date of release is not valid");
         }
     }
 

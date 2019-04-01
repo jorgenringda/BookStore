@@ -11,7 +11,7 @@ import newsstand.publication.Newspaper;
  * Class that check if there is the same type of Publication in the register
  * that is being added.
  *
- * @author Ishmael
+ * @author UltraReidar
  */
 public class Duplicate {
 
@@ -34,15 +34,13 @@ public class Duplicate {
             Iterator<Publication> typeIterator) {
         boolean duplicate = false;
         Book book = null;
-        if (typeIterator.hasNext()) {
-            while (typeIterator.hasNext() && duplicate) {
-                book = (Book) typeIterator.next();
-                if (checkCommonDuplicate(duplicateBook, book)) {
-                    if (book.getEdition() == duplicateBook.getEdition()) {
-                        if (book.getauthor().
-                                equals(duplicateBook.getauthor())) {
-                            duplicate = true;
-                        }
+        while (typeIterator.hasNext() && !duplicate) {
+            book = (Book) typeIterator.next();
+            if (checkCommonDuplicate(duplicateBook, book)) {
+                if (book.getEdition() == duplicateBook.getEdition()) {
+                    if (book.getauthor().
+                            equals(duplicateBook.getauthor())) {
+                        duplicate = true;
                     }
                 }
             }
@@ -66,14 +64,12 @@ public class Duplicate {
             Iterator<Publication> typeIterator) {
         boolean duplicate = false;
         Magazine magazine = null;
-        if (typeIterator.hasNext()) {
-            while (typeIterator.hasNext() && !duplicate) {
-                magazine = (Magazine) typeIterator.next();
-                if (checkCommonDuplicate(duplicateMagazine, magazine)) {
-                    if (magazine.getReleasePerYear()
-                            == duplicateMagazine.getReleasePerYear()) {
-                        duplicate = true;
-                    }
+        while (typeIterator.hasNext() && !duplicate) {
+            magazine = (Magazine) typeIterator.next();
+            if (checkCommonDuplicate(duplicateMagazine, magazine)) {
+                if (magazine.getReleasePerYear()
+                        == duplicateMagazine.getReleasePerYear()) {
+                    duplicate = true;
                 }
             }
         }
@@ -96,14 +92,12 @@ public class Duplicate {
             Iterator<Publication> typeIterator) {
         boolean duplicate = false;
         Newspaper newspaper = null;
-        if (typeIterator.hasNext()) {
-            while (typeIterator.hasNext() && duplicate) {
-                newspaper = (Newspaper) typeIterator.next();
-                if (checkCommonDuplicate(duplicateNewspaper, newspaper)) {
-                    if (newspaper.getDateOfRelease().
-                            equals(duplicateNewspaper.getDateOfRelease())) {
-                        duplicate = true;
-                    }
+        while (typeIterator.hasNext() && !duplicate) {
+            newspaper = (Newspaper) typeIterator.next();
+            if (checkCommonDuplicate(duplicateNewspaper, newspaper)) {
+                if (newspaper.getDateOfRelease().
+                        equals(duplicateNewspaper.getDateOfRelease())) {
+                    duplicate = true;
                 }
             }
         }
@@ -124,17 +118,16 @@ public class Duplicate {
      */
     public Movie checkDuplicateMovie(Movie duplicateMovie,
             Iterator<Publication> typeIterator) {
+
         boolean duplicate = false;
         Movie movie = null;
-        if (typeIterator.hasNext()) {
-            while (typeIterator.hasNext() && duplicate) {
-                movie = (Movie) typeIterator.next();
-                if (checkCommonDuplicate(duplicateMovie, movie)) {
-                    if (movie.getDateOfRelease().
-                            equals(duplicateMovie.getDateOfRelease())) {
-                        if (movie.getDirector().equals(duplicateMovie.getDirector())) {
-                            duplicate = true;
-                        }
+        while (typeIterator.hasNext() && !duplicate) {
+            movie = (Movie) typeIterator.next();
+            if (checkCommonDuplicate(duplicateMovie, movie)) {
+                if (movie.getDateOfRelease().
+                        equals(duplicateMovie.getDateOfRelease())) {
+                    if (movie.getDirector().equals(duplicateMovie.getDirector())) {
+                        duplicate = true;
                     }
                 }
             }
@@ -170,6 +163,10 @@ public class Duplicate {
             }
         }
         return duplicate;
+    }
+
+    Object checkDuplicateMagazine(Movie testMovie, Iterator<Publication> iterator) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

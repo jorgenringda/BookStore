@@ -77,28 +77,6 @@ public class publicationRegister extends Register {
     }
 
     /**
-     * Returns a Iterator of an ArrayList containing publication.
-     *
-     * @param title is the String word that is used to search for in an
-     * ArrayList
-     * @return a Iterator of an ArrayList
-     */
-    public Iterator<Publication> getPublicationToRemoveByTitle(String title) {
-        ArrayList<Publication> publicationsToRemove = new ArrayList<>();
-        ArrayList<Publication> publicationList = new ArrayList<>();
-        getPublicationInOrder().forEachRemaining(publicationList::add);
-        if (!title.isEmpty()) {
-            for (Publication paper : publicationList) {
-                if (paper.getTitle().toUpperCase()
-                        .contains(title.toUpperCase())) {
-                    publicationsToRemove.add(paper);
-                }
-            }
-        }
-        return publicationsToRemove.iterator();
-    }
-
-    /**
      * Method to take everything in the register and sort it after type.
      *
      * @return an iterator with all publication in order

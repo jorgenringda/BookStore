@@ -1,12 +1,12 @@
 package newsstand.view;
 
-import newsstand.GetInputs;
+import newsstand.input.GetInputs;
 import newsstand.publication.Publication;
 
 /**
  * Super class of View
  *
- * @author Ishmael
+ * @author UltraReidar
  */
 public abstract class View {
 
